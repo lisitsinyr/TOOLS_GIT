@@ -1,0 +1,10 @@
+GIT_CONFIG
+
+PROJECTS_LYR_TOOLS_GIT-TOOLS_GIT.ffs_batch
+PROJECTS_LYR_TOOLS_GIT-TOOLS_GIT.ffs_gui
+
+out
+out/
+
+.vscode
+.vscode/
