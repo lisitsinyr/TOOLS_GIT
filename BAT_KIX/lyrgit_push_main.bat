@@ -2,7 +2,7 @@
 rem -------------------------------------------------------------------
 rem lyrgit_push_main.bat
 rem ----------------------------------------------------------------------------
-rem ***РћС‚РїСЂР°РІРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ
+rem ***Отправить изменения
 rem ----------------------------------------------------------------------------
 rem usage: git push [<options>] [<repository> [<refspec>...]]
 rem 
@@ -41,69 +41,70 @@ rem     -6, --ipv6            use IPv6 addresses only
 rem -------------------------------------------------------------------
 chcp 1251
 
-rem -------------------------------------------------------------------
-rem PROJECTS
-rem -------------------------------------------------------------------
-rem set PROJECTS="D:\PROJECTS_LYR\CHECK_LIST\01_OS\03_UNIX\PROJECTS_UNIX"
-set PROJECTS=%~p0
-echo %PROJECTS%
+rem echo -------------------------------------------------------
+rem echo 
+rem echo -------------------------------------------------------
+rem CURRENT_DIR - Текущий каталог
+set CURRENT_DIR=%CD%
+rem echo Текущий каталог %CURRENT_DIR%
+rem Файл скрипта: каталог+имя+расширение
+set SCRIPT_FULLFILENAME=%~f0
+rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+rem Файл скрипта: имя+расширение
+set SCRIPT_BASEFILENAME=%~n0%~x0
+rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
+rem Файл скрипта: имя
+set SCRIPT_FILENAME=%~n0
+rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
+rem Каталог BAT_DIR: каталог
+if "%BAT_DIR%" == "" (
+    set BAT_DIR=D:\TOOLS\TOOLS_BAT\BAT
+    set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
+)
+rem echo BAT_DIR: %BAT_DIR%
 
-rem  РљР°С‚Р°Р»РѕРі Р¶СѓСЂРЅР°Р»РѕРІ
-set LOG_DIR=%~d0%~p0LOGS
-echo %LOG_DIR%
-rem  Р¤Р°Р№Р» Р¶СѓСЂРЅР°Р»Р°: РєР°С‚Р°Р»РѕРі+РёРјСЏ+СЂР°СЃС€РёСЂРµРЅРёРµ
-set LOG_FILE=%~d0%~p0LOGS\%~n0%~x0.log
-echo %LOG_FILE%
-rem  РџР°СЂР°РјРµС‚СЂС‹ Р¶СѓСЂРЅР°Р»Р°
-set LOG_OPT="1 1"
-echo %LOG_OPT%
-rem  Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РєР°С‚Р°Р»РѕРі+РёРјСЏ+СЂР°СЃС€РёСЂРµРЅРёРµ
-set LOG_BATFULLNAME=%~f0
-echo %LOG_BATFULLNAME%
-rem  Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РёРјСЏ+СЂР°СЃС€РёСЂРµРЅРёРµ
-set LOG_BATBASENAME=%~n0%~x0
-echo %LOG_BATBASENAME%
-rem  Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РёРјСЏ
-set LOG_BATFILENAME=%~n0
-echo %LOG_BATFILENAME%
-
-rem set LOG_FILE=%~d0%PROJECTS%LOGS\%LOG_BATBASENAME%.log
-rem echo "***" > %LOG_FILE%
+call %BAT_DIR%\__SET__.bat
 
 :begin
-echo ---------------------------------------------------------------
-echo Check 1 parametr
-echo ---------------------------------------------------------------
-:P1
-if "%1" == "" goto P1_Input
-set Comment="%1"
-goto begin_git
-:P1_Input
-set /p Comment=Comment:
-if "%Comment%" == "" goto P1_Error
-goto begin_git
-:P1_Error
-echo Parametr Comment not set
-set Comment=Git Bash commit update
+echo ------------------------------------------------------- > %LOG_FULLFILENAME%
+echo Запуск %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo Текущий каталог %CURRENT_DIR% >> %LOG_FULLFILENAME%
+echo ТЕЛО СКРИПТА %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo Check 1 parametr >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+if "%1" == "" (
+    set /p Comment=Comment:
+) else (
+    set Comment=%1
+)
+if "%Comment%" == "" (
+    echo Parametr Comment not set
+    set Comment=Git Bash commit update
+)
 
-:begin_git
-echo ---------------------------------------------------------------
-echo ...git add --all
-git add --all >> %LOG_FILE% 
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo ...git add --all >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+git add --all >> %LOG_FULLFILENAME%
 
-echo ---------------------------------------------------------------
-echo ...git commit -m "%Comment%"
-rem git commit -m "%Comment%" >> %LOG_FILE% 
-git commit -m "%Comment%"
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo ...git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+rem git commit -m "%Comment%"
 
-echo ---------------------------------------------------------------
-echo ...git push -u origin main
-rem git push -u origin main >> %LOG_FILE% 
-git push -u origin main
-echo ---------------------------------------------------------------
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo ...git push -u origin main >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+git push -u origin main >> %LOG_FULLFILENAME% >> %LOG_FULLFILENAME%
+rem git push -u origin main
+echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 
-rem type %LOG_FILE%
+rem pause
+rem far -v %LOG_FULLFILENAME%
 
-pause
+exit /b 0
 
 :Exit
