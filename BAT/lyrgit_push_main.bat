@@ -2,7 +2,7 @@
 rem -------------------------------------------------------------------
 rem lyrgit_push_main.bat
 rem ----------------------------------------------------------------------------
-rem ***Отправить изменения
+rem ***РћС‚РїСЂР°РІРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ
 rem ----------------------------------------------------------------------------
 rem usage: git push [<options>] [<repository> [<refspec>...]]
 rem 
@@ -44,19 +44,19 @@ chcp 1251
 rem echo -------------------------------------------------------
 rem echo 
 rem echo -------------------------------------------------------
-rem CURRENT_DIR - Текущий каталог
+rem CURRENT_DIR - РўРµРєСѓС‰РёР№ РєР°С‚Р°Р»РѕРі
 set CURRENT_DIR=%CD%
-rem echo Текущий каталог %CURRENT_DIR%
-rem Файл скрипта: каталог+имя+расширение
+rem echo РўРµРєСѓС‰РёР№ РєР°С‚Р°Р»РѕРі %CURRENT_DIR%
+rem Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РєР°С‚Р°Р»РѕРі+РёРјСЏ+СЂР°СЃС€РёСЂРµРЅРёРµ
 set SCRIPT_FULLFILENAME=%~f0
 rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
-rem Файл скрипта: имя+расширение
+rem Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РёРјСЏ+СЂР°СЃС€РёСЂРµРЅРёРµ
 set SCRIPT_BASEFILENAME=%~n0%~x0
 rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
-rem Файл скрипта: имя
+rem Р¤Р°Р№Р» СЃРєСЂРёРїС‚Р°: РёРјСЏ
 set SCRIPT_FILENAME=%~n0
 rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
-rem Каталог BAT_DIR: каталог
+rem РљР°С‚Р°Р»РѕРі BAT_DIR: РєР°С‚Р°Р»РѕРі
 if "%BAT_DIR%" == "" (
     set BAT_DIR=D:\TOOLS\TOOLS_BAT\BAT
     set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
@@ -67,10 +67,10 @@ call %BAT_DIR%\__SET__.bat
 
 :begin
 echo ------------------------------------------------------- > %LOG_FULLFILENAME%
-echo Запуск %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo Р—Р°РїСѓСЃРє %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Текущий каталог %CURRENT_DIR% >> %LOG_FULLFILENAME%
-echo ТЕЛО СКРИПТА %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo РўРµРєСѓС‰РёР№ РєР°С‚Р°Р»РѕРі %CURRENT_DIR% >> %LOG_FULLFILENAME%
+echo РўР•Р›Рћ РЎРљР РРџРўРђ %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo Check 1 parametr >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
