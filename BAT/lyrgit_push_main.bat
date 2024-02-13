@@ -46,7 +46,7 @@ rem echo
 rem echo -------------------------------------------------------
 rem CURRENT_DIR - Текущий каталог
 set CURRENT_DIR=%CD%
-rem echo Текущий каталог %CURRENT_DIR%
+rem echo CURRENT_DIR: %CURRENT_DIR%
 rem Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
 rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
@@ -67,10 +67,11 @@ call %BAT_DIR%\__SET__.bat
 
 :begin
 echo ------------------------------------------------------- > %LOG_FULLFILENAME%
-echo Запуск %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo Start %SCRIPT_BASEFILENAME% ...       >> %LOG_FULLFILENAME%
 echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Текущий каталог %CURRENT_DIR% >> %LOG_FULLFILENAME%
-echo ТЕЛО СКРИПТА %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+echo CURRENT_DIR: %CURRENT_DIR%            >> %LOG_FULLFILENAME%
+echo BODY script %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo Check 1 parametr >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
