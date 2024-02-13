@@ -75,14 +75,15 @@ echo --------------------------------------------------------------- >> %LOG_FUL
 echo Check 1 parametr >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 if "%1" == "" (
-    set /p Comment=Comment:
+    rem set /p Comment=Comment:
+    set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 ) else (
     set Comment=%1
 )
 if "%Comment%" == "" (
-    echo Parametr Comment not set
     set Comment=Git Bash commit update
 )
+echo Comment: %Comment%
 
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo ...git add --all >> %LOG_FULLFILENAME%
@@ -98,7 +99,7 @@ rem git commit -m "%Comment%"
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo ...git push -u origin main >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git push -u origin main >> %LOG_FULLFILENAME% >> %LOG_FULLFILENAME%
+git push -u origin main >> %LOG_FULLFILENAME%
 rem git push -u origin main
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 
