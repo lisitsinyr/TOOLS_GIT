@@ -53,13 +53,7 @@ rem                           with --get, use default value when missing entry
 rem ----------------------------------------------------------------------------
 chcp 1251
 
-
 rem echo -------------------------------------------------------
-rem echo 
-rem echo -------------------------------------------------------
-rem CURRENT_DIR - Текущий каталог
-set CURRENT_DIR=%CD%
-rem echo CURRENT_DIR: %CURRENT_DIR%
 rem Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
 rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%

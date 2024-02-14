@@ -42,11 +42,6 @@ rem -------------------------------------------------------------------
 chcp 1251
 
 rem echo -------------------------------------------------------
-rem echo 
-rem echo -------------------------------------------------------
-rem CURRENT_DIR - Текущий каталог
-set CURRENT_DIR=%CD%
-rem echo CURRENT_DIR: %CURRENT_DIR%
 rem Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
 rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
@@ -65,9 +60,11 @@ rem echo BAT_DIR: %BAT_DIR%
 rem -------------------------------------------------------------------
 rem KIX_DIR - каталог APP_KIX
 set KIX_DIR=
+rem echo KIX_DIR: %KIX_DIR%
 rem -------------------------------------------------------------------
 rem APP_KIX - Скрипт APP_KIX имя+расширение
 set APP_KIX=[lyrxxx_]PATTERN_KIX.kix
+rem echo APP_KIX: %APP_KIX%
 rem -------------------------------------------------------------------
 
 call %BAT_DIR%\__SET__.bat
