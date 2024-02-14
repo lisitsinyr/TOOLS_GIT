@@ -98,13 +98,13 @@ rem =================================================
 echo ---------------------------------------------------------------
 echo Check_P1 [Comment]
 echo ---------------------------------------------------------------
-if "%1" == "" (
+if "%1"=="" (
     rem set /p Comment=Comment:
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 ) else (
     set Comment=%1
 )
-if "%Comment%" == "" (
+if "%Comment%"=="" (
     set Comment=Git Bash commit update
 )
 echo Comment: %Comment%
