@@ -66,7 +66,7 @@ rem echo BAT_DIR: %BAT_DIR%
 call %BAT_DIR%\__SET__.bat
 
 :begin
-echo ------------------------------------------------------- > %LOG_FULLFILENAME%
+echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo Start %SCRIPT_BASEFILENAME% ...       >> %LOG_FULLFILENAME%
 echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo CURRENT_DIR: %CURRENT_DIR%            >> %LOG_FULLFILENAME%
