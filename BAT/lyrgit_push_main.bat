@@ -59,7 +59,7 @@ rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
 rem Каталог BAT_DIR: каталог
 if "%BAT_DIR%" == "" (
     set BAT_DIR=D:\TOOLS\TOOLS_BAT\BAT
-    set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
+    set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT\BAT
 )
 rem echo BAT_DIR: %BAT_DIR%
 
@@ -70,11 +70,50 @@ echo ------------------------------------------------------- >> %LOG_FULLFILENAM
 echo Start %SCRIPT_BASEFILENAME% ...       >> %LOG_FULLFILENAME%
 echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo CURRENT_DIR: %CURRENT_DIR%            >> %LOG_FULLFILENAME%
-echo BODY script %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
+set DIR_SAVE=%CURRENT_DIR%
 
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Check 1 parametr >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+call :Check_P1 || exit /b 1
+
+if exist %KIX_DIR%\%APP_KIX% (
+    echo START script %KIX_DIR%\%APP_KIX% ... >> %LOG_FULLFILENAME%
+    kix32.exe %KIX_DIR%\%APP_KIX% "$P1=%1" "$P2=%2" "$P3=%3" "$P4=%4" "$P5=%5" "$P6=%6" "$P7=%7" "$P8=%8" "$P9=%9"
+) else (
+    rem echo BODY script %SCRIPT_BASEFILENAME% ... 
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git add --all >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    git add --all >> %LOG_FULLFILENAME%
+
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+    rem git commit -m "%Comment%"
+
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git push -u origin main >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    git push -u origin main >> %LOG_FULLFILENAME%
+    rem git push -u origin main
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+)
+
+rem far -v %LOG_FULLFILENAME%
+
+cd /D %DIR_SAVE%
+
+rem Выход из сценария. Дальше - только функции.
+:Exit
+exit /b 0
+
+rem =================================================
+rem ФУНКЦИИ
+rem =================================================
+
+:Check_P1
+echo ---------------------------------------------------------------
+echo Check_P1
+echo ---------------------------------------------------------------
 if "%1" == "" (
     rem set /p Comment=Comment:
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
@@ -85,28 +124,4 @@ if "%Comment%" == "" (
     set Comment=Git Bash commit update
 )
 echo Comment: %Comment%
-
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git add --all >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git add --all >> %LOG_FULLFILENAME%
-
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git commit -m "%Comment%" >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git commit -m "%Comment%" >> %LOG_FULLFILENAME%
-rem git commit -m "%Comment%"
-
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git push -u origin main >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git push -u origin main >> %LOG_FULLFILENAME%
-rem git push -u origin main
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-
-rem pause
-rem far -v %LOG_FULLFILENAME%
-
 exit /b 0
-
-:Exit
