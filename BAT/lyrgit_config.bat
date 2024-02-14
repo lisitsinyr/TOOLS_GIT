@@ -75,6 +75,12 @@ if "%BAT_DIR%" == "" (
     set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT\BAT
 )
 rem echo BAT_DIR: %BAT_DIR%
+rem KIX_DIR - каталог APP_KIX
+set KIX_DIR=
+rem -------------------------------------------------------------------
+rem APP_KIX - Скрипт APP_KIX имя+расширение
+set APP_KIX=[lyrxxx_]PATTERN_KIX.kix
+rem -------------------------------------------------------------------
 
 call %BAT_DIR%\__SET__.bat
 
