@@ -54,7 +54,7 @@ rem ----------------------------------------------------------------------------
 chcp 1251>NUL
 
 echo ==================================================================
-echo SET ...
+echo SET %0 ...
 echo ==================================================================
 setlocal enableextensions disabledelayedexpansion
 rem CURRENT_DIR - Текущий каталог
@@ -71,7 +71,7 @@ call :__START_LOG || exit /b 1
 
 :begin
 echo ================================================================= >> %LOG_FULLFILENAME%
-echo START ... %CURRENT_DIR% ... >> %LOG_FULLFILENAME%
+echo START %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo ================================================================== >> %LOG_FULLFILENAME%
 
 rem BODY script ..............................................
@@ -83,7 +83,7 @@ git config --list --show-origin --show-scope  >> %LOG_FULLFILENAME%
 rem BODY script ..............................................
 
 echo ================================================================= >> %LOG_FULLFILENAME%
-echo STOP ... >> %LOG_FULLFILENAME%
+echo STOP %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo ================================================================== >> %LOG_FULLFILENAME%
 cd /D %DIR_SAVE%
 rem far -v %LOG_FULLFILENAME%
