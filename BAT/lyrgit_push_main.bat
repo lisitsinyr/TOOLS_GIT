@@ -52,7 +52,7 @@ rem Файл скрипта: имя
 set SCRIPT_FILENAME=%~n0
 rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
 
-call %BAT_DIR%\__SET__.bat
+call %BAT_DIR%\LIB\__SET__.bat
 
 :begin
 echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
