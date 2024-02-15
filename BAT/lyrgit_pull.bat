@@ -68,7 +68,7 @@ rem     --[no-]show-forced-updates
 rem                           check for forced-updates on all updated branches
 rem     --[no-]set-upstream   set upstream for git pull/fetch
 rem ----------------------------------------------------------------------------
-chcp 1251
+chcp 1251>NUL
 
 :begin
 echo ---------------------------------------------------------------

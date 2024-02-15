@@ -51,7 +51,7 @@ rem     --[no-]show-scope     show scope of config (worktree, local, global, sys
 rem     --[no-]default <value>
 rem                           with --get, use default value when missing entry
 rem ----------------------------------------------------------------------------
-chcp 1251
+chcp 1251>NUL
 
 echo ==================================================================
 echo SET ...

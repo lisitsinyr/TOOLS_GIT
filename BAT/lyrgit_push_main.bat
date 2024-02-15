@@ -39,7 +39,7 @@ rem                           option to transmit
 rem     -4, --ipv4            use IPv4 addresses only
 rem     -6, --ipv6            use IPv6 addresses only
 rem -------------------------------------------------------------------
-chcp 1251
+chcp 1251>NUL
 
 echo ==================================================================
 echo SET ...
