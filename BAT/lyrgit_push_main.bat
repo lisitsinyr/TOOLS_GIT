@@ -41,29 +41,29 @@ rem     -6, --ipv6            use IPv6 addresses only
 rem -------------------------------------------------------------------
 chcp 1251
 
-rem echo -------------------------------------------------------
-rem Файл скрипта: каталог+имя+расширение
-set SCRIPT_FULLFILENAME=%~f0
-rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
-rem Файл скрипта: имя+расширение
-set SCRIPT_BASEFILENAME=%~n0%~x0
-rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
-rem Файл скрипта: имя
-set SCRIPT_FILENAME=%~n0
-rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
-
-call %BAT_DIR%\LIB\__SET__.bat
+echo ==================================================================
+echo SET ...
+echo ==================================================================
+setlocal enableextensions disabledelayedexpansion
+rem CURRENT_DIR - Текущий каталог
+set CURRENT_DIR=%CD%
+set DIR_SAVE=%CURRENT_DIR%
+set BAT_DIR=D:\TOOLS\TOOLS_BAT
+call :__SET_BAT_DIR || exit /b 1
+call :__SET_VAR_SCRIPT %0 || exit /b 1
+call :__SET_VAR_DEFAULT || exit /b 1
+call :__SET_VAR_PROJECTS || exit /b 1
+call :__SET_CHECK_REPO || exit /b 1
+call :__SET_LOG || exit /b 1
+call :__START_LOG || exit /b 1
 
 :begin
-echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Start %SCRIPT_BASEFILENAME% ...       >> %LOG_FULLFILENAME%
-echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo CURRENT_DIR: %CURRENT_DIR%            >> %LOG_FULLFILENAME%
-set DIR_SAVE=%CURRENT_DIR%
+echo ================================================================= >> %LOG_FULLFILENAME%
+echo START ... %CURRENT_DIR% ... >> %LOG_FULLFILENAME%
+echo ================================================================== >> %LOG_FULLFILENAME%
 
+rem BODY script ..............................................
 call :Check_P1 || exit /b 1
-
-rem echo BODY script %SCRIPT_BASEFILENAME% ... 
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 echo ...git add --all >> %LOG_FULLFILENAME%
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
@@ -81,11 +81,14 @@ echo --------------------------------------------------------------- >> %LOG_FUL
 git push -u origin main >> %LOG_FULLFILENAME%
 rem git push -u origin main
 echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+rem BODY script ..............................................
 
-rem far -v %LOG_FULLFILENAME%
-
+echo ================================================================= >> %LOG_FULLFILENAME%
+echo STOP ... >> %LOG_FULLFILENAME%
+echo ================================================================== >> %LOG_FULLFILENAME%
 cd /D %DIR_SAVE%
-
+rem far -v %LOG_FULLFILENAME%
+call :__STOP_LOG || exit /b 1
 rem Выход из сценария. Дальше - только функции.
 :Exit
 exit /b 0
@@ -93,7 +96,33 @@ exit /b 0
 rem =================================================
 rem ФУНКЦИИ
 rem =================================================
+:__SET_BAT_DIR
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__SET_VAR_SCRIPT
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+:__SET_VAR_DEFAULT
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__SET_VAR_PROJECTS
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__SET_CHECK_REPO
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__SET_LOG
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__START_LOG
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
+:__STOP_LOG
+%BAT_DIR%\LIB\__SET_LIB.bat %*
+exit /b 0
 
+rem =================================================
+rem ФУНКЦИИ BODY
+rem =================================================
 :Check_P1
 echo ---------------------------------------------------------------
 echo Check_P1 [Comment]
