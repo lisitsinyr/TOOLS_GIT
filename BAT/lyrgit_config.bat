@@ -67,7 +67,8 @@ call :__SET_VAR_DEFAULT || exit /b 1
 call :__SET_VAR_PROJECTS || exit /b 1
 call :__SET_CHECK_REPO || exit /b 1
 call :__SET_LOG || exit /b 1
-call :__START_LOG || exit /b 1
+
+call :StartLogFile || exit /b 1
 
 :begin
 echo ================================================================= >> %LOG_FULLFILENAME%
@@ -87,7 +88,8 @@ echo STOP %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo ================================================================== >> %LOG_FULLFILENAME%
 cd /D %DIR_SAVE%
 rem far -v %LOG_FULLFILENAME%
-call :__STOP_LOG || exit /b 1
+
+call :StoptLogFile || exit /b 1
 rem Выход из сценария. Дальше - только функции.
 :Exit
 exit /b 0
@@ -112,11 +114,12 @@ exit /b 0
 :__SET_LOG
 %BAT_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
-:__START_LOG
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+
+:StartLogFile
+%BAT_DIR%\LIB\LYRLog.bat %*
 exit /b 0
-:__STOP_LOG
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+:StopLogFile
+%BAT_DIR%\LIB\LYRLog.bat %*
 exit /b 0
 
 rem =================================================
