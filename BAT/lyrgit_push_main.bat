@@ -90,7 +90,7 @@ echo ================================================================== >> %LOG_
 cd /D %DIR_SAVE%
 rem far -v %LOG_FULLFILENAME%
 
-call :StoptLogFile || exit /b 1
+call :StopLogFile || exit /b 1
 rem Выход из сценария. Дальше - только функции.
 :Exit
 exit /b 0
