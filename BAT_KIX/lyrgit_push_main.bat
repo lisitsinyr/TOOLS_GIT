@@ -56,14 +56,14 @@ rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
 rem Файл скрипта: имя
 set SCRIPT_FILENAME=%~n0
 rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
-rem Каталог BAT_DIR: каталог
-if "%BAT_DIR%" == "" (
-    set BAT_DIR=D:\TOOLS\TOOLS_BAT\BAT
-    set BAT_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
+rem Каталог SCRIPTS_DIR: каталог
+if "%SCRIPTS_DIR%" == "" (
+    set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT\BAT
+    set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
 )
-rem echo BAT_DIR: %BAT_DIR%
+rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
 
-call %BAT_DIR%\__SET__.bat
+call %SCRIPTS_DIR%\__SET__.bat
 
 :begin
 echo ------------------------------------------------------- > %LOG_FULLFILENAME%

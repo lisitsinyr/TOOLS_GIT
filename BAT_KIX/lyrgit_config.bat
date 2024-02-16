@@ -101,11 +101,11 @@ set LOG_DIR=D:\PROJECTS_LYR\LOGS
 set LOG_FILENAME=%REPO_NAME%_CONFIG_list_so_ss_current
 rem echo LOG_FILENAME: %LOG_FILENAME%
 
-rem ...Каталог BAT_DIR: каталог
-if "%BAT_DIR%" == "" (
-    set BAT_DIR=D:\TOOLS\TOOLS_BAT\BAT
+rem ...Каталог SCRIPTS_DIR: каталог
+if "%SCRIPTS_DIR%" == "" (
+    set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT\BAT
 )
-rem echo BAT_DIR: %BAT_DIR%
+rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
 rem ...DATETIME_STAMP
 set DATETIME_STAMP=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 rem echo DATETIME_STAMP: %DATETIME_STAMP%

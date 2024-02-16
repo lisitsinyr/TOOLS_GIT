@@ -60,8 +60,8 @@ setlocal enableextensions disabledelayedexpansion
 rem CURRENT_DIR - Текущий каталог
 set CURRENT_DIR=%CD%
 set DIR_SAVE=%CURRENT_DIR%
-set BAT_DIR=D:\TOOLS\TOOLS_BAT
-call :__SET_BAT_DIR || exit /b 1
+set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
+call :__SET_SCRIPTS_DIR || exit /b 1
 call :__SET_VAR_SCRIPT %0 || exit /b 1
 call :__SET_VAR_DEFAULT || exit /b 1
 call :__SET_VAR_PROJECTS || exit /b 1
@@ -97,29 +97,29 @@ exit /b 0
 rem =================================================
 rem ФУНКЦИИ
 rem =================================================
-:__SET_BAT_DIR
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+:__SET_SCRIPTS_DIR
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
 :__SET_VAR_SCRIPT
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 :__SET_VAR_DEFAULT
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
 :__SET_VAR_PROJECTS
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
 :__SET_CHECK_REPO
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
 :__SET_LOG
-%BAT_DIR%\LIB\__SET_LIB.bat %*
+%SCRIPTS_DIR%\LIB\__SET_LIB.bat %*
 exit /b 0
 
 :StartLogFile
-%BAT_DIR%\LIB\LYRLog.bat %*
+%SCRIPTS_DIR%\LIB\LYRLog.bat %*
 exit /b 0
 :StopLogFile
-%BAT_DIR%\LIB\LYRLog.bat %*
+%SCRIPTS_DIR%\LIB\LYRLog.bat %*
 exit /b 0
 
 rem =================================================
