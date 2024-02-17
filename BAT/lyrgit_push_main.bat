@@ -40,16 +40,25 @@ rem     -4, --ipv4            use IPv4 addresses only
 rem     -6, --ipv6            use IPv6 addresses only
 rem -------------------------------------------------------------------
 chcp 1251>NUL
-setlocal enableextensions disabledelayedexpansion
+
+setlocal enabledelayedexpansion
+rem setlocal enableextensions disabledelayedexpansion
+echo ERRORLEVEL: %ERRORLEVEL%
 
 rem SCRIPT_FULLFILENAME - Файл скрипта [каталог+имя+расширение]
 set SCRIPT_FULLFILENAME=%0
 rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+rem SCRIPTS_DIR - Каталог скриптов
+if "%SCRIPTS_DIR%" == "" (
+    set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
+    set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT
+    set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT
+)
+rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
 
 echo ==================================================================
 echo SET %SCRIPT_FULLFILENAME% ...
 echo ==================================================================
-call :__SET_SCRIPTS_DIR || exit /b 1
 call :__SET_VAR_SCRIPT %SCRIPT_FULLFILENAME% || exit /b 1
 call :__SET_VAR_DEFAULT || exit /b 1
 call :__SET_VAR_PROJECTS || exit /b 1
@@ -64,11 +73,7 @@ echo START %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
 echo ================================================================== >> %LOG_FULLFILENAME%
 set DIR_SAVE=%CURRENT_DIR%
 
-rem BODY script ..............................................
-
-call :BODY || exit /b 1
-
-rem BODY script ..............................................
+call :MAIN || exit /b 1
 
 echo ================================================================= >> %LOG_FULLFILENAME%
 echo STOP %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
@@ -109,31 +114,15 @@ exit /b 0
 :Check_P
 %SCRIPTS_DIR%\LIB\LYRSupport.bat %*
 exit /b 0
-rem =================================================
-rem ФУНКЦИЯ :__SET_SCRIPTS_DIR
-rem =================================================
-:__SET_SCRIPTS_DIR
-rem beginfunction
-    rem echo ---------------------------------------------------------------
-    rem echo __SET_SCRIPTS_DIR
-    rem echo ---------------------------------------------------------------
-    rem SCRIPTS_DIR - Каталог скриптов
-    if "%SCRIPTS_DIR%" == "" (
-        set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
-        set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT
-        set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT
-    )
-    rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
-    exit /b 0
-rem endfunction
 
 rem =================================================
-rem ФУНКЦИЯ :BODY
+rem ФУНКЦИЯ :MAIN
 rem =================================================
-:BODY
+:MAIN
 rem beginfunction
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+
     call :Check_P Comment %Comment% || exit /b 1
     echo Comment: %Comment%
 
