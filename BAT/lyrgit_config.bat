@@ -55,6 +55,8 @@ chcp 1251>NUL
 
 setlocal enabledelayedexpansion
 
+setlocal enableextensions
+
 :begin
 rem -------------------------------------------------------------------
 rem PROJECTS - имя проекта
@@ -115,35 +117,29 @@ set LOG_FILE_ADD=1
 rem -------------------------------------------------------------------
 rem LOG_FILE_DT - Параметры журнала [0]
 set LOG_FILE_DT=0
-rem -------------------------------------------------------------------
+rem  -------------------------------------------------------------------
 rem LOG_DIR - Каталог журнала [каталог]
 set LOG_DIR=
 rem -------------------------------------------------------------------
 rem LOG_FILENAME - Файл журнала [имя]
 set LOG_FILENAME=
-
 call :__SET_LOG || exit /b 1
+
+set DIR_SAVE=%CURRENT_DIR%
 
 call :StartLogFile || exit /b 1
 
-echo ================================================================= >> %LOG_FULLFILENAME%
-echo START %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
-echo ================================================================== >> %LOG_FULLFILENAME%
-set DIR_SAVE=%CURRENT_DIR%
-
 call :MAIN || exit /b 1
-
-echo ================================================================= >> %LOG_FULLFILENAME%
-echo STOP %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
-echo ================================================================== >> %LOG_FULLFILENAME%
-
-cd /D %DIR_SAVE%
-rem far -v %LOG_FULLFILENAME%
 
 call :StopLogFile || exit /b 1
 
+rem far -v %LOG_FULLFILENAME%
+
 rem Выход из сценария. Дальше - только функции.
+cd /D %DIR_SAVE%
+
 :Exit
+
 exit /b 0
 
 rem =================================================
@@ -163,6 +159,12 @@ exit /b 0
 :__SET_LOG
 %LIB_BAT%\__SET_LIB.bat %*
 exit /b 0
+:FormatStr
+%LIB_BAT%\LYRLog.bat %*
+:AddLog
+%LIB_BAT%\LYRLog.bat %*
+:AddLogFile
+%LIB_BAT%\LYRLog.bat %*
 :StartLogFile
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
