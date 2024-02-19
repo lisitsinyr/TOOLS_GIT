@@ -43,8 +43,6 @@ chcp 1251>NUL
 
 setlocal enabledelayedexpansion
 
-setlocal enableextensions
-
 :begin
 rem -------------------------------------------------------------------
 rem PROJECTS - имя проекта
