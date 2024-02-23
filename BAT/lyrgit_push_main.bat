@@ -110,7 +110,7 @@ rem beginfunction
     rem  -------------------------------------------------------------------
     rem  DEBUG 1-включить DEBUG 0-выключить DEBUG
     set DEBUG=%2
-    echo DEBUG: %DEBUG%
+    rem echo DEBUG: %DEBUG%
 
     set FUNCNAME=%0
     if "%DEBUG%"=="1" (
@@ -181,8 +181,9 @@ rem beginfunction
     rem LOG_FILENAME_FORMAT - Формат имени файла журнала [FILENAME,DATETIME,...]
     set LOG_FILENAME_FORMAT=
     rem -------------------------------------------------------------------
-    rem LOG_FILE_ADD - Параметры журнала [1]
+    rem LOG_FILE_ADD - Параметры журнала [0]
     set LOG_FILE_ADD=0
+    rem echo LOG_FILE_ADD: %LOG_FILE_ADD%
     rem -------------------------------------------------------------------
     rem LOG_FILE_DT - Параметры журнала [0]
     set LOG_FILE_DT=0
