@@ -101,6 +101,12 @@ exit /b 0
 :Check_P
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
+:Pause
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:PressAnyKey
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
 
 rem -----------------------------------------------
 rem procedure MAIN_INIT (FULLFILENAME, DEBUG)
@@ -266,6 +272,9 @@ rem beginfunction
     echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
     git push -u origin main >> %LOG_FULLFILENAME%
     echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+
+    rem call :Pause %SLEEP% || exit /b 1
+    rem call :PressAnyKey || exit /b 1
 
     exit /b 0
 rem endfunction
