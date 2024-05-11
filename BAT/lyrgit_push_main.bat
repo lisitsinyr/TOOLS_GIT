@@ -61,49 +61,6 @@ rem ----------------------------------------------------------------------------
 exit /b 0
 rem --------------------------------------------------------------------------------
 
-rem =================================================
-rem ФУНКЦИИ LIB
-rem =================================================
-:__SET_VAR_SCRIPT
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_VAR_DEFAULT
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_VAR_PROJECTS
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_CHECK_REPO
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_LOG
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:FormatStr
-%LIB_BAT%\LYRLog.bat %*
-exit /b 0
-:AddLog
-%LIB_BAT%\LYRLog.bat %*
-exit /b 0
-:AddLogFile
-%LIB_BAT%\LYRLog.bat %*
-exit /b 0
-:StartLogFile
-%LIB_BAT%\LYRLog.bat %*
-exit /b 0
-:StopLogFile
-%LIB_BAT%\LYRLog.bat %*
-exit /b 0
-:Check_P
-%LIB_BAT%\LYRSupport.bat %*
-exit /b 0
-:Pause
-%LIB_BAT%\LYRSupport.bat %*
-exit /b 0
-:PressAnyKey
-%LIB_BAT%\LYRSupport.bat %*
-exit /b 0
-
 rem -----------------------------------------------
 rem procedure MAIN_INIT (FULLFILENAME, DEBUG)
 rem -----------------------------------------------
@@ -180,7 +137,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    call :__SET_VAR_DEFAULT %DEBUG% || exit /b 1
+    call :__SET_VAR_DEFAULT || exit /b 1
     call :__SET_VAR_SCRIPT %SCRIPT_FULLFILENAME% || exit /b 1
     call :__SET_VAR_PROJECTS || exit /b 1
     call :__SET_CHECK_REPO || exit /b 1
@@ -312,3 +269,47 @@ rem beginfunction
 
     exit /b 0
 rem endfunction
+
+rem =================================================
+rem ФУНКЦИИ LIB
+rem =================================================
+:__SET_VAR_SCRIPT
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
+:__SET_VAR_DEFAULT
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
+:__SET_VAR_PROJECTS
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
+:__SET_CHECK_REPO
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
+:__SET_LOG
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
+:FormatStr
+%LIB_BAT%\LYRLog.bat %*
+exit /b 0
+:AddLog
+%LIB_BAT%\LYRLog.bat %*
+exit /b 0
+:AddLogFile
+%LIB_BAT%\LYRLog.bat %*
+exit /b 0
+:StartLogFile
+%LIB_BAT%\LYRLog.bat %*
+exit /b 0
+:StopLogFile
+%LIB_BAT%\LYRLog.bat %*
+exit /b 0
+:Check_P
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:Pause
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:PressAnyKey
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+rem =================================================
