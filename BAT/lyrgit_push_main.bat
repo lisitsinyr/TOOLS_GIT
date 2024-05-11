@@ -109,13 +109,9 @@ rem procedure MAIN_INIT (FULLFILENAME, DEBUG)
 rem -----------------------------------------------
 :MAIN_INIT
 rem beginfunction
-    rem  -------------------------------------------------------------------
-    rem  DEBUG 1-включить DEBUG 0-выключить DEBUG
-    set DEBUG=%2
-    rem echo DEBUG: %DEBUG%
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     rem -------------------------------------------------------------------
@@ -180,8 +176,8 @@ rem -----------------------------------------------
 :MAIN_SET
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     call :__SET_VAR_DEFAULT %DEBUG% || exit /b 1
@@ -218,8 +214,8 @@ rem ----------------------------------------------------------------------------
 :MAIN_CHECK_PARAMETR
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     set P1=P1_default
@@ -242,8 +238,8 @@ rem ----------------------------------------------------------------------------
 :MAIN_SYNTAX
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     exit /b 0
@@ -255,8 +251,8 @@ rem =================================================
 :MAIN
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     call :MAIN_FUNC || exit /b 1
@@ -273,8 +269,8 @@ rem ----------------------------------------------------------------------------
 :MAIN_FUNC
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     call :GIT_RUN || exit /b 1
@@ -288,8 +284,8 @@ rem =================================================
 :GIT_RUN
 rem beginfunction
     set FUNCNAME=%0
-    if "%DEBUG%"=="1" (
-        echo DEBUG: procedure %FUNCNAME% ...
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
     )
 
     set Comment="Git Bash commit update"
