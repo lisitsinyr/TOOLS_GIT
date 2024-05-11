@@ -59,7 +59,7 @@ rem ----------------------------------------------------------------------------
 rem 
 rem --------------------------------------------------------------------------------
 :begin
-    call :MAIN_INIT %0 0 || exit /b 1
+    call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
     rem set DIR_SAVE=%CURRENT_DIR%
