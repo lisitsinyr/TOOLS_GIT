@@ -47,16 +47,20 @@ rem ----------------------------------------------------------------------------
 rem 
 rem --------------------------------------------------------------------------------
 :begin
+    set BATNAME=%~nx0
+    echo Start !BATNAME! ...
+
+    set DEBUG=
+
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
-    rem set DIR_SAVE=%CURRENT_DIR%
-    rem call :MAIN_CHECK_PARAMETR || exit /b 1
-    rem call :MAIN_SYNTAX || exit /b 1
-    call :MAIN || exit /b 1
+    call :MAIN_SYNTAX || exit /b 1
+   
+    call :MAIN_CHECK_PARAMETR %* || exit /b 1
+    call :MAIN %* || exit /b 1
+    
     call :StopLogFile || exit /b 1
-    rem far -v %LOG_FULLFILENAME%
-    rem cd /D %DIR_SAVE%
 :Exit
 exit /b 0
 rem --------------------------------------------------------------------------------
@@ -83,7 +87,7 @@ rem beginfunction
     rem -------------------------------------------------------------------
     rem SCRIPTS_DIR - Каталог скриптов
     rem -------------------------------------------------------------------
-    if "%SCRIPTS_DIR%" == "" (
+    if "!SCRIPTS_DIR!" == "" (
         set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT
@@ -92,37 +96,37 @@ rem beginfunction
     rem SCRIPT_FULLFILENAME - Файл скрипта [каталог+имя+расширение]
     rem -------------------------------------------------------------------
     set SCRIPT_FULLFILENAME=%1
-    rem echo PROJECTS_LYR_DIR: %PROJECTS_LYR_DIR%
-    rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
-    rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+    rem echo PROJECTS_LYR_DIR: !PROJECTS_LYR_DIR!
+    rem echo SCRIPTS_DIR: !SCRIPTS_DIR!
+    rem echo SCRIPT_FULLFILENAME: !SCRIPT_FULLFILENAME!
   
     rem -------------------------------------------------------------------
     rem PROJECTS_DIR - каталог проекта
     rem -------------------------------------------------------------------
-    set PROJECTS_DIR=%PROJECTS_LYR_DIR%\CHECK_LIST\03_SCRIPT\04_BAT\%PROJECTS%
-    rem echo PROJECTS_DIR: %PROJECTS_DIR%
+    set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\03_SCRIPT\04_BAT\!PROJECTS!
+    rem echo PROJECTS_DIR: !PROJECTS_DIR!
 
     rem -------------------------------------------------------------------
     rem LIB_BAT - каталог библиотеки скриптов
     rem -------------------------------------------------------------------
-    if "%LIB_BAT%" == "" (
-        set LIB_BAT=%SCRIPTS_DIR%\LIB
-        rem echo LIB_BAT: %LIB_BAT%
+    if "!LIB_BAT!" == "" (
+        set LIB_BAT=!SCRIPTS_DIR!\LIB
+        rem echo LIB_BAT: !LIB_BAT!
     )
-    if not exist %LIB_BAT%\ (
-        echo ERROR: Каталог библиотеки LYR $LIB_BAT не существует...
+    if not exist "!LIB_BAT!"\ (
+        echo ERROR: Каталог библиотеки LYR "!LIB_BAT!" не существует...
         exit /b 0
     )
 
     rem -------------------------------------------------------------------
     rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
     rem -------------------------------------------------------------------
-    if "%SCRIPTS_DIR_KIX%" == "" (
+    if "!SCRIPTS_DIR_KIX!" == "" (
         set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\PROJECTS_KIX\TOOLS_KIX
     )
-    rem echo SCRIPTS_DIR_KIX: %SCRIPTS_DIR_KIX%
+    rem echo SCRIPTS_DIR_KIX: !SCRIPTS_DIR_KIX!
 
     exit /b 0
 rem endfunction
@@ -138,7 +142,7 @@ rem beginfunction
     )
 
     call :__SET_VAR_DEFAULT || exit /b 1
-    call :__SET_VAR_SCRIPT %SCRIPT_FULLFILENAME% || exit /b 1
+    call :__SET_VAR_SCRIPT !SCRIPT_FULLFILENAME! || exit /b 1
     call :__SET_VAR_PROJECTS || exit /b 1
     call :__SET_CHECK_REPO || exit /b 1
     rem -------------------------------------------------------------------
@@ -149,11 +153,11 @@ rem beginfunction
     rem set LOG_FILENAME_FORMAT=
     rem -------------------------------------------------------------------
     rem LOG_FILE_ADD - Параметры журнала [0]
-    if "%LOG_FILE_ADD%"=="" set LOG_FILE_ADD=0
-    rem echo LOG_FILE_ADD: %LOG_FILE_ADD%
+    if "!LOG_FILE_ADD!"=="" set LOG_FILE_ADD=0
+    rem echo LOG_FILE_ADD: !LOG_FILE_ADD!
     rem -------------------------------------------------------------------
     rem LOG_FILE_DT - Параметры журнала [0]
-    if "%LOG_FILE_DT%"=="" set LOG_FILE_DT=0
+    if "!LOG_FILE_DT!"=="" set LOG_FILE_DT=0
     rem  -------------------------------------------------------------------
     rem LOG_DIR - Каталог журнала [каталог]
     rem set LOG_DIR=
@@ -174,17 +178,6 @@ rem beginfunction
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
-
-    set P1=P1_default
-    call :Check_P P1 %1 || exit /b 1
-
-    rem call :AddLog %loStandard% %TEXT% "P1: %P1%" || exit /b 1
-    rem call :AddLog %loTextFile% %TEXT% "P1: %P1%" || exit /b 1
-    call :AddLog %loAll% %TEXT% P1: %P1% || exit /b 1
-    call :AddLog %loAll% %INFO% P1: %P1% || exit /b 1
-
-    rem set F=LYRLog.txt
-    rem call :AddLogFile %loAll% %F%
 
     exit /b 0
 rem endfunction
@@ -212,7 +205,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    call :MAIN_FUNC || exit /b 1
+    call :MAIN_GIT_RUN || exit /b 1
 
     rem call :Pause %SLEEP% || exit /b 1
     rem call :PressAnyKey || exit /b 1
@@ -220,25 +213,10 @@ rem beginfunction
     exit /b 0
 rem endfunction
 
-rem --------------------------------------------------------------------------------
-rem procedure MAIN_FUNC ()
-rem --------------------------------------------------------------------------------
-:MAIN_FUNC
-rem beginfunction
-    set FUNCNAME=%0
-    if defined DEBUG (
-        echo DEBUG: procedure !FUNCNAME! ...
-    )
-
-    call :GIT_RUN || exit /b 1
-
-    exit /b 0
-rem endfunction
-
 rem =================================================
-rem procedure GIT_RUN ()
+rem procedure MAIN_GIT_RUN ()
 rem =================================================
-:GIT_RUN
+:MAIN_GIT_RUN
 rem beginfunction
     set FUNCNAME=%0
     if defined DEBUG (
@@ -251,21 +229,21 @@ rem beginfunction
     call :Check_P Comment %Comment% || exit /b 1
     echo Comment: %Comment%
 
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git add --all >> %LOG_FULLFILENAME%
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    git add --all >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git add --all >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    git add --all >> !LOG_FULLFILENAME!
     
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git commit -m "%Comment%" >> %LOG_FULLFILENAME%
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git commit -m "%Comment%" >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    git commit -m "%Comment%" >> !LOG_FULLFILENAME!
 
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git push -u origin main >> %LOG_FULLFILENAME%
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    git push -u origin main >> %LOG_FULLFILENAME%
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git push -u origin main >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    git push -u origin main >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction

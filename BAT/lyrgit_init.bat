@@ -35,16 +35,18 @@ rem ----------------------------------------------------------------------------
     set BATNAME=%~nx0
     echo Start !BATNAME! ...
 
+    set DEBUG=
+
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
-    rem set DIR_SAVE=%CURRENT_DIR%
-    rem call :MAIN_CHECK_PARAMETR || exit /b 1
-    rem call :MAIN_SYNTAX || exit /b 1
+    call :MAIN_SYNTAX || exit /b 1
+   
+    call :MAIN_CHECK_PARAMETR %* || exit /b 1
     call :MAIN %* || exit /b 1
+    
     call :StopLogFile || exit /b 1
-    rem far -v %LOG_FULLFILENAME%
-    rem cd /D %DIR_SAVE%
+
 :Exit
 exit /b 0
 rem --------------------------------------------------------------------------------
@@ -71,7 +73,7 @@ rem beginfunction
     rem -------------------------------------------------------------------
     rem SCRIPTS_DIR - Каталог скриптов
     rem -------------------------------------------------------------------
-    if "%SCRIPTS_DIR%" == "" (
+    if "!SCRIPTS_DIR!" == "" (
         set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT
@@ -80,37 +82,37 @@ rem beginfunction
     rem SCRIPT_FULLFILENAME - Файл скрипта [каталог+имя+расширение]
     rem -------------------------------------------------------------------
     set SCRIPT_FULLFILENAME=%1
-    rem echo PROJECTS_LYR_DIR: %PROJECTS_LYR_DIR%
-    rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
-    rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+    rem echo PROJECTS_LYR_DIR: !PROJECTS_LYR_DIR!
+    rem echo SCRIPTS_DIR: !SCRIPTS_DIR!
+    rem echo SCRIPT_FULLFILENAME: !SCRIPT_FULLFILENAME!
   
     rem -------------------------------------------------------------------
     rem PROJECTS_DIR - каталог проекта
     rem -------------------------------------------------------------------
-    set PROJECTS_DIR=%PROJECTS_LYR_DIR%\CHECK_LIST\03_SCRIPT\04_BAT\%PROJECTS%
-    rem echo PROJECTS_DIR: %PROJECTS_DIR%
+    set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\03_SCRIPT\04_BAT\!PROJECTS!
+    rem echo PROJECTS_DIR: !PROJECTS_DIR!
 
     rem -------------------------------------------------------------------
     rem LIB_BAT - каталог библиотеки скриптов
     rem -------------------------------------------------------------------
-    if "%LIB_BAT%" == "" (
-        set LIB_BAT=%SCRIPTS_DIR%\LIB
-        rem echo LIB_BAT: %LIB_BAT%
+    if "!LIB_BAT!" == "" (
+        set LIB_BAT=!SCRIPTS_DIR!\LIB
+        rem echo LIB_BAT: !LIB_BAT!
     )
-    if not exist %LIB_BAT%\ (
-        echo ERROR: Каталог библиотеки LYR $LIB_BAT не существует...
+    if not exist "!LIB_BAT!"\ (
+        echo ERROR: Каталог библиотеки LYR "!LIB_BAT!" не существует...
         exit /b 0
     )
 
     rem -------------------------------------------------------------------
     rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
     rem -------------------------------------------------------------------
-    if "%SCRIPTS_DIR_KIX%" == "" (
+    if "!SCRIPTS_DIR_KIX!" == "" (
         set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\PROJECTS_KIX\TOOLS_KIX
     )
-    rem echo SCRIPTS_DIR_KIX: %SCRIPTS_DIR_KIX%
+    rem echo SCRIPTS_DIR_KIX: !SCRIPTS_DIR_KIX!
 
     exit /b 0
 rem endfunction
@@ -126,7 +128,7 @@ rem beginfunction
     )
 
     call :__SET_VAR_DEFAULT || exit /b 1
-    call :__SET_VAR_SCRIPT %SCRIPT_FULLFILENAME% || exit /b 1
+    call :__SET_VAR_SCRIPT !SCRIPT_FULLFILENAME! || exit /b 1
     call :__SET_VAR_PROJECTS || exit /b 1
     call :__SET_CHECK_REPO || exit /b 1
     rem -------------------------------------------------------------------
@@ -137,11 +139,11 @@ rem beginfunction
     rem set LOG_FILENAME_FORMAT=
     rem -------------------------------------------------------------------
     rem LOG_FILE_ADD - Параметры журнала [0]
-    if "%LOG_FILE_ADD%"=="" set LOG_FILE_ADD=0
-    rem echo LOG_FILE_ADD: %LOG_FILE_ADD%
+    if "!LOG_FILE_ADD!"=="" set LOG_FILE_ADD=0
+    rem echo LOG_FILE_ADD: !LOG_FILE_ADD!
     rem -------------------------------------------------------------------
     rem LOG_FILE_DT - Параметры журнала [0]
-    if "%LOG_FILE_DT%"=="" set LOG_FILE_DT=0
+    if "!LOG_FILE_DT!"=="" set LOG_FILE_DT=0
     rem  -------------------------------------------------------------------
     rem LOG_DIR - Каталог журнала [каталог]
     rem set LOG_DIR=
@@ -163,16 +165,33 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    set P1=P1_default
-    call :Check_P P1 %1 || exit /b 1
+    rem Количество аргументов
+    call :Read_N %* || exit /b 1
+    echo Read_N: !Read_N!
 
-    rem call :AddLog %loStandard% %TEXT% "P1: %P1%" || exit /b 1
-    rem call :AddLog %loTextFile% %TEXT% "P1: %P1%" || exit /b 1
-    call :AddLog %loAll% %TEXT% P1: %P1% || exit /b 1
-    call :AddLog %loAll% %INFO% P1: %P1% || exit /b 1
+    rem -------------------------------------
+    rem OPTION
+    rem -------------------------------------
 
-    rem set F=LYRLog.txt
-    rem call :AddLogFile %loAll% %F%
+    rem -------------------------------------
+    rem ARGS
+    rem -------------------------------------
+    rem Проверка на обязательные аргументы
+    set directory=%1
+    set PN_CAPTION=directory
+    call :Read_P directory !directory! || exit /b 1
+    echo directory: !directory!
+
+    set Comment="Git Bash commit update"
+    set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+    set PN_CAPTION=Comment
+    call :Check_P Comment !Comment! || exit /b 1
+    echo Comment: !Comment!
+
+    rem call :AddLog !loStandard! !TEXT! Comment: !Comment! || exit /b 1
+    rem call :AddLog !loTextFile! !TEXT! Comment: !Comment! || exit /b 1
+    call :AddLog !loAll! !TEXT! Comment: !Comment! || exit /b 1
+    call :AddLog !loAll! !INFO! Comment: !Comment! || exit /b 1
 
     exit /b 0
 rem endfunction
@@ -200,13 +219,22 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
     
-    rem Количество аргументов
-    call :Read_N %* || exit /b 1
-    rem echo Read_N: !Read_N!
+    set OK=yes
 
-    call :MAIN_FUNC || exit /b 1
+    if defined directory (
+        if not exist "!directory!\" (
+            echo INFO: directory "!directory!\" not exist ...
+            mkdir "!directory!"
+        )
+        cd "!directory!"
+    )
 
-    call :GIT_RUN || exit /b 1
+    rem Создание и настройка репозитория
+    if not exist ".git\" (
+        call :MAIN_GIT_RUN || exit /b 1
+    ) else (
+        echo ERROR: Repository exist ...
+    )
 
     rem call :Pause %SLEEP% || exit /b 1
     rem call :PressAnyKey || exit /b 1
@@ -214,85 +242,56 @@ rem beginfunction
     exit /b 0
 rem endfunction
 
-rem --------------------------------------------------------------------------------
-rem procedure MAIN_FUNC ()
-rem --------------------------------------------------------------------------------
-:MAIN_FUNC
+rem =================================================
+rem procedure MAIN_GIT_RUN ()
+rem =================================================
+:MAIN_GIT_RUN
 rem beginfunction
     set FUNCNAME=%0
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    rem -------------------------------------
-    rem ARGS
-    rem -------------------------------------
-    rem Проверка на обязательные аргументы
-    set PathName=
-    set PN_CAPTION=PathName
-    call :Read_P PathName %1 || exit /b 1
-    echo PathName: !PathName!
+    set touchRUN=D:\TOOLS\EXE\touch.exe
 
-    set Comment="Git Bash commit update"
-    set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    set PN_CAPTION=Comment
-    call :Check_P Comment !Comment! || exit /b 1
-    echo Comment: %Comment%
-
-    exit /b 0
-rem endfunction
-
-rem =================================================
-rem procedure GIT_RUN ()
-rem =================================================
-:GIT_RUN
-rem beginfunction
-    set FUNCNAME=%0
-    if defined DEBUG (
-        echo DEBUG: procedure !FUNCNAME! ...
+    set FileName=.gitignore
+    if not exist !FileName! (
+        echo Create !FileName! ...
+        %touchRUN% !FileName!
+        attrib +A !FileName!
     )
-    
-    if defined PathName (
-        if not exist "!PathName!"\ (
-            mkdir "!PathName!"
-        )
-        cd "!PathName!"
-    )
-
-    set file=.gitignore
-    if not exist !file! (
-        echo Create !file! ...
-        touch !file!
-        attrib +A !file!
-    )
-    set file=.gitmodules
-    if not exist !file! (
-        echo Create !file! ...
-        touch !file!
-        attrib +A !file!
+    set FileName=.gitmodules
+    if not exist !FileName! (
+        echo Create !FileName! ...
+        %touchRUN% !FileName!
+        attrib +A !FileName!
     )
     set file=README.md
-    if not exist !file! (
-        echo Create !file! ...
-        touch !file!
-        attrib +A !file!
-        echo PROJECT_NAME > !file!
-        echo ------------ >> !file!
+    if not exist !FileName! (
+        echo Create !FileName! ...
+        %touchRUN% !FileName!
+        attrib +A !FileName!
+        echo PROJECT_NAME > !FileName!
+        echo ------------ >> !FileName!
     )
 
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git init >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git init >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     git init
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git add --all >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git add --all >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     git add --all
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git commit -m "!Comment!" >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git commit -m "!Comment!" >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     git commit -m "!Comment!"
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    echo ...git branch -M main >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git branch -M main >> !LOG_FULLFILENAME!
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     git branch -M main
-    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction

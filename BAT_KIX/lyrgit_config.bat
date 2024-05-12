@@ -102,10 +102,10 @@ set LOG_FILENAME=%REPO_NAME%_CONFIG_list_so_ss_current
 rem echo LOG_FILENAME: %LOG_FILENAME%
 
 rem ...Каталог SCRIPTS_DIR: каталог
-if "%SCRIPTS_DIR%" == "" (
+if "!SCRIPTS_DIR!" == "" (
     set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT\BAT
 )
-rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
+rem echo SCRIPTS_DIR: !SCRIPTS_DIR!
 rem ...DATETIME_STAMP
 set DATETIME_STAMP=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 rem echo DATETIME_STAMP: %DATETIME_STAMP%
@@ -124,7 +124,7 @@ rem echo -------------------------------------------------------
 rem echo 1.PROJECTS
 rem echo -------------------------------------------------------
 set PROJECTS=PROJECTS_BAT
-rem echo PROJECTS: %PROJECTS%
+rem echo PROJECTS: !PROJECTS!
 set CURRENT_SYSTEM=%OS%
 rem echo CURRENT_SYSTEM: %CURRENT_SYSTEM%
 set UNAME=%COMPUTERNAME%
@@ -132,12 +132,12 @@ rem echo UNAME: %UNAME%
 set USERNAME=%USERNAME%
 rem echo USERNAME: %USERNAME%
 set PROJECTS_LYR_DIR=D:\PROJECTS_LYR
-rem echo PROJECTS_LYR_DIR: %PROJECTS_LYR_DIR%
-set PROJECTS_DIR=%PROJECTS_LYR_DIR%\CHECK_LIST\03_SCRIPT\04_BAT\%PROJECTS%
-rem echo PROJECTS_DIR: %PROJECTS_DIR%
+rem echo PROJECTS_LYR_DIR: !PROJECTS_LYR_DIR!
+set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\03_SCRIPT\04_BAT\!PROJECTS!
+rem echo PROJECTS_DIR: !PROJECTS_DIR!
 rem ...Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
-rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+rem echo SCRIPT_FULLFILENAME: !SCRIPT_FULLFILENAME!
 rem ...Файл скрипта: имя+расширение
 set SCRIPT_BASEFILENAME=%~n0%~x0
 rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
@@ -150,7 +150,7 @@ rem echo -------------------------------------------------------
 rem Каталог журнала: каталог
 if "%LOG_DIR%" == "" (
     rem set LOG_FULLFILENAME=%~d0%~p0LOGS
-    set LOG_DIR=%PROJECTS_LYR_DIR%\CHECK_LIST\03_SCRIPT\04_BAT\%PROJECTS%\LOGS
+    set LOG_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\03_SCRIPT\04_BAT\!PROJECTS!\LOGS
 )
 rem echo LOG_DIR: %LOG_DIR%
 if exist %LOG_DIR% (
@@ -175,7 +175,7 @@ if "%LOG_FILENAME%" == "" (
 rem echo LOG_FILENAME: %LOG_FILENAME%
 rem ...Файл журнала: каталог+имя+расширение
 set LOG_FULLFILENAME=%LOG_DIR%\%LOG_FILENAME%.log
-rem echo LOG_FULLFILENAME: %LOG_FULLFILENAME%
+rem echo LOG_FULLFILENAME: !LOG_FULLFILENAME!
 rem ...Параметры журнала LOG_OPT1
 set LOG_OPT1=%LOG_OPT:~0,1%
 if "%LOG_OPT1%" == "" (
@@ -194,12 +194,12 @@ echo 5. Запуск
 echo -------------------------------------------------------
 
 :begin
-echo --------------------------------------------------------------- > %LOG_FULLFILENAME%
-echo ...git config --list --show-origin --show-scope >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git config --list --show-origin --show-scope  >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- > !LOG_FULLFILENAME!
+echo ...git config --list --show-origin --show-scope >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+git config --list --show-origin --show-scope  >> !LOG_FULLFILENAME!
 
-far -v %LOG_FULLFILENAME%
+far -v !LOG_FULLFILENAME!
 
 exit /b 0
 

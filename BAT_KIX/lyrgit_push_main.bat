@@ -49,7 +49,7 @@ set CURRENT_DIR=%CD%
 rem echo Текущий каталог %CURRENT_DIR%
 rem Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
-rem echo SCRIPT_FULLFILENAME: %SCRIPT_FULLFILENAME%
+rem echo SCRIPT_FULLFILENAME: !SCRIPT_FULLFILENAME!
 rem Файл скрипта: имя+расширение
 set SCRIPT_BASEFILENAME=%~n0%~x0
 rem echo SCRIPT_BASEFILENAME: %SCRIPT_BASEFILENAME%
@@ -57,23 +57,23 @@ rem Файл скрипта: имя
 set SCRIPT_FILENAME=%~n0
 rem echo SCRIPT_FILENAME: %SCRIPT_FILENAME%
 rem Каталог SCRIPTS_DIR: каталог
-if "%SCRIPTS_DIR%" == "" (
+if "!SCRIPTS_DIR!" == "" (
     set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT\BAT
     set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT\BAT\99.[lyr]LYR
 )
-rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
+rem echo SCRIPTS_DIR: !SCRIPTS_DIR!
 
-call %SCRIPTS_DIR%\__SET__.bat
+call !SCRIPTS_DIR!\__SET__.bat
 
 :begin
-echo ------------------------------------------------------- > %LOG_FULLFILENAME%
-echo Запуск %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
-echo ------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Текущий каталог %CURRENT_DIR% >> %LOG_FULLFILENAME%
-echo ТЕЛО СКРИПТА %SCRIPT_BASEFILENAME% ... >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo Check 1 parametr >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo ------------------------------------------------------- > !LOG_FULLFILENAME!
+echo Запуск %SCRIPT_BASEFILENAME% ... >> !LOG_FULLFILENAME!
+echo ------------------------------------------------------- >> !LOG_FULLFILENAME!
+echo Текущий каталог %CURRENT_DIR% >> !LOG_FULLFILENAME!
+echo ТЕЛО СКРИПТА %SCRIPT_BASEFILENAME% ... >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+echo Check 1 parametr >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
 if "%1" == "" (
     set /p Comment=Comment:
 ) else (
@@ -84,26 +84,26 @@ if "%Comment%" == "" (
     set Comment=Git Bash commit update
 )
 
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git add --all >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git add --all >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+echo ...git add --all >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+git add --all >> !LOG_FULLFILENAME!
 
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git commit -m "%Comment%" >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git commit -m "%Comment%" >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+echo ...git commit -m "%Comment%" >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+git commit -m "%Comment%" >> !LOG_FULLFILENAME!
 rem git commit -m "%Comment%"
 
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-echo ...git push -u origin main >> %LOG_FULLFILENAME%
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-git push -u origin main >> %LOG_FULLFILENAME% >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+echo ...git push -u origin main >> !LOG_FULLFILENAME!
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+git push -u origin main >> !LOG_FULLFILENAME! >> !LOG_FULLFILENAME!
 rem git push -u origin main
-echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
 
 rem pause
-rem far -v %LOG_FULLFILENAME%
+rem far -v !LOG_FULLFILENAME!
 
 exit /b 0
 
