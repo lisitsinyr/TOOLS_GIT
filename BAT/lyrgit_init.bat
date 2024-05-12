@@ -1,55 +1,28 @@
 @echo off
 rem -------------------------------------------------------------------
-rem lyrgit_config.bat
+rem lyrgit_init.bat
 rem ----------------------------------------------------------------------------
-rem GIT_CONFIG_list_so_ss_current
+rem 1.Запустить рабочую зону [***]
 rem ----------------------------------------------------------------------------
-rem usage: git config [<options>]
+rem Инициализация репозитария в текущем катологе или в заданном каталоге       
+rem ----------------------------------------------------------------------------
+rem usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
+rem                 [--separate-git-dir <git-dir>] [--object-format=<format>]
+rem                 [-b <branch-name> | --initial-branch=<branch-name>]
+rem                 [--shared[=<permissions>]] [<directory>]
 rem 
-rem Config file location
-rem     --[no-]global         use global config file
-rem     --[no-]system         use system config file
-rem     --[no-]local          use repository config file
-rem     --[no-]worktree       use per-worktree config file
-rem     -f, --[no-]file <file>
-rem                           use given config file
-rem     --[no-]blob <blob-id> read config from given blob object
-rem 
-rem Action
-rem     --[no-]get            get value: name [value-pattern]
-rem     --[no-]get-all        get all values: key [value-pattern]
-rem     --[no-]get-regexp     get values for regexp: name-regex [value-pattern]
-rem     --[no-]get-urlmatch   get value specific for the URL: section[.var] URL
-rem     --[no-]replace-all    replace all matching variables: name value [value-pattern]
-rem     --[no-]add            add a new variable: name value
-rem     --[no-]unset          remove a variable: name [value-pattern]
-rem     --[no-]unset-all      remove all matches: name [value-pattern]
-rem     --[no-]rename-section rename section: old-name new-name
-rem     --[no-]remove-section remove a section: name
-rem     -l, --[no-]list       list all
-rem     --[no-]fixed-value    use string equality when comparing values to 'value-pattern'
-rem     -e, --[no-]edit       open an editor
-rem     --[no-]get-color      find the color configured: slot [default]
-rem     --[no-]get-colorbool  find the color setting: slot [stdout-is-tty]
-rem 
-rem Type
-rem     -t, --[no-]type <type>
-rem                           value is given this type
-rem     --bool                value is "true" or "false"
-rem     --int                 value is decimal number
-rem     --bool-or-int         value is --bool or --int
-rem     --bool-or-str         value is --bool or string
-rem     --path                value is a path (file or directory name)
-rem     --expiry-date         value is an expiry date
-rem 
-rem Other
-rem     -z, --[no-]null       terminate values with NUL byte
-rem     --[no-]name-only      show variable names only
-rem     --[no-]includes       respect include directives on lookup
-rem     --[no-]show-origin    show origin of config (file, standard input, blob, command line)
-rem     --[no-]show-scope     show scope of config (worktree, local, global, system, command)
-rem     --[no-]default <value>
-rem                           with --get, use default value when missing entry
+rem     --[no-]template <template-directory>
+rem                           directory from which templates will be used
+rem     --[no-]bare           create a bare repository
+rem     --shared[=<permissions>]
+rem                           specify that the git repository is to be shared amongst several users
+rem     -q, --[no-]quiet      be quiet
+rem     --[no-]separate-git-dir <gitdir>
+rem                           separate git dir from working tree
+rem     -b, --[no-]initial-branch <name>
+rem                           override the name of the initial branch
+rem     --[no-]object-format <hash>
+rem                           specify the hash algorithm to use
 rem ----------------------------------------------------------------------------
 chcp 1251>NUL
 
@@ -59,13 +32,16 @@ rem ----------------------------------------------------------------------------
 rem 
 rem --------------------------------------------------------------------------------
 :begin
+    set BATNAME=%~nx0
+    echo Старт !BATNAME! ...
+
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
     rem set DIR_SAVE=%CURRENT_DIR%
     rem call :MAIN_CHECK_PARAMETR || exit /b 1
     rem call :MAIN_SYNTAX || exit /b 1
-    call :MAIN || exit /b 1
+    call :MAIN %* || exit /b 1
     call :StopLogFile || exit /b 1
     rem far -v %LOG_FULLFILENAME%
     rem cd /D %DIR_SAVE%
@@ -223,8 +199,14 @@ rem beginfunction
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
+    
+    rem Количество аргументов
+    call :Read_N %* || exit /b 1
+    rem echo Read_N: !Read_N!
 
     call :MAIN_FUNC || exit /b 1
+
+    rem call :GIT_RUN || exit /b 1
 
     rem call :Pause %SLEEP% || exit /b 1
     rem call :PressAnyKey || exit /b 1
@@ -242,7 +224,20 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    call :GIT_RUN || exit /b 1
+    rem -------------------------------------
+    rem ARGS
+    rem -------------------------------------
+    rem Проверка на обязательные аргументы
+    set PathName=
+    set PN_CAPTION=PathName
+    call :Read_P PathName %1 || exit /b 1
+    echo PathName: !PathName!
+
+    set Comment="Git Bash commit update"
+    set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+    set PN_CAPTION=Comment
+    call :Check_P Comment !Comment! || exit /b 1
+    echo Comment: %Comment%
 
     exit /b 0
 rem endfunction
@@ -256,11 +251,39 @@ rem beginfunction
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
+    
+    if defined PathName (
+        if exist "!PathName!"\ (
+            cd "!PathName!"
+        )
+    )
+        
+    echo Создание .gitignore ...
+    touch .gitignore
+    attrib +A +H .gitignore
 
-    echo --------------------------------------------------------------- > %LOG_FULLFILENAME%
-    echo ...git config --list --show-origin --show-scope >> %LOG_FULLFILENAME%
+    echo Создание .gitmodules ...
+    touch .gitmodules
+    attrib +A +H .gitmodules
+
+    echo Создание README.md ...
+    touch README.md
+    attrib +A +H README.md
+    echo README >> README.md
+
     echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
-    git config --list --show-origin --show-scope  >> %LOG_FULLFILENAME%
+    echo ...git init >> %LOG_FULLFILENAME%
+    git init
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git add --all >> %LOG_FULLFILENAME%
+    git add --all
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git commit -m "!Comment!" >> %LOG_FULLFILENAME%
+    git commit -m "!Comment!"
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
+    echo ...git branch -M main >> %LOG_FULLFILENAME%
+    git branch -M main
+    echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
 
     exit /b 0
 rem endfunction
