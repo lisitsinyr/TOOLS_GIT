@@ -33,7 +33,7 @@ rem
 rem --------------------------------------------------------------------------------
 :begin
     set BATNAME=%~nx0
-    echo Старт !BATNAME! ...
+    echo Start !BATNAME! ...
 
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
@@ -206,7 +206,7 @@ rem beginfunction
 
     call :MAIN_FUNC || exit /b 1
 
-    rem call :GIT_RUN || exit /b 1
+    call :GIT_RUN || exit /b 1
 
     rem call :Pause %SLEEP% || exit /b 1
     rem call :PressAnyKey || exit /b 1
@@ -258,17 +258,17 @@ rem beginfunction
         )
     )
         
-    echo Создание .gitignore ...
+    echo Create .gitignore ...
     touch .gitignore
-    attrib +A +H .gitignore
+    attrib +A .gitignore
 
-    echo Создание .gitmodules ...
+    echo Create .gitmodules ...
     touch .gitmodules
-    attrib +A +H .gitmodules
+    attrib +A .gitmodules
 
-    echo Создание README.md ...
+    echo Create README.md ...
     touch README.md
-    attrib +A +H README.md
+    attrib +A README.md
     echo README >> README.md
 
     echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
