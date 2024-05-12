@@ -253,23 +253,32 @@ rem beginfunction
     )
     
     if defined PathName (
-        if exist "!PathName!"\ (
-            cd "!PathName!"
+        if not exist "!PathName!"\ (
+            mkdir "!PathName!"
         )
+        cd "!PathName!"
     )
-        
-    echo Create .gitignore ...
-    touch .gitignore
-    attrib +A .gitignore
 
-    echo Create .gitmodules ...
-    touch .gitmodules
-    attrib +A .gitmodules
-
-    echo Create README.md ...
-    touch README.md
-    attrib +A README.md
-    echo README >> README.md
+    set file=.gitignore
+    if not exist !file! (
+        echo Create !file! ...
+        touch !file!
+        attrib +A !file!
+    )
+    set file=.gitmodules
+    if not exist !file! (
+        echo Create !file! ...
+        touch !file!
+        attrib +A !file!
+    )
+    set file=README.md
+    if not exist !file! (
+        echo Create !file! ...
+        touch !file!
+        attrib +A !file!
+        echo PROJECT_NAME > !file!
+        echo ------------ >> !file!
+    )
 
     echo --------------------------------------------------------------- >> %LOG_FULLFILENAME%
     echo ...git init >> %LOG_FULLFILENAME%
