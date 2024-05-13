@@ -37,6 +37,7 @@ rem ----------------------------------------------------------------------------
 
     set DEBUG=
 
+    set OK=yes
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
@@ -217,8 +218,6 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
     
-    set OK=yes
-
     if defined directory (
         if not exist "!directory!\" (
             echo INFO: directory "!directory!\" not exist ...
@@ -229,7 +228,9 @@ rem beginfunction
 
     rem Создание и настройка репозитория
     if not exist ".git\" (
-        call :MAIN_GIT_RUN || exit /b 1
+        if defined OK (
+            call :MAIN_GIT_RUN || exit /b 1
+        )
     ) else (
         echo ERROR: Repository exist ...
     )

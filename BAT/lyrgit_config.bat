@@ -64,6 +64,7 @@ rem ----------------------------------------------------------------------------
 
     set DEBUG=
 
+    set OK=yes
     call :MAIN_INIT %0 || exit /b 1
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
@@ -230,7 +231,9 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    call :MAIN_GIT_RUN || exit /b 1
+    if defined OK (
+        call :MAIN_GIT_RUN || exit /b 1
+    )
 
     rem call :Pause %SLEEP% || exit /b 1
     rem call :PressAnyKey || exit /b 1
