@@ -176,14 +176,14 @@ rem beginfunction
     rem ARGS
     rem -------------------------------------
     rem Проверка на обязательные аргументы
-    set directory=%1
-    set PN_CAPTION=directory
-    call :Read_P directory !directory! || exit /b 1
+    set PN_CAPTION=Ввод значения directory
+    set directory=
+    call :Read_P directory %1 || exit /b 1
     echo directory: !directory!
 
+    set PN_CAPTION=Comment
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    set PN_CAPTION=Comment
     call :Check_P Comment !Comment! || exit /b 1
     echo Comment: !Comment!
 
