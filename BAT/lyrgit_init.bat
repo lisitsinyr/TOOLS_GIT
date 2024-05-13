@@ -41,10 +41,8 @@ rem ----------------------------------------------------------------------------
     call :MAIN_SET || exit /b 1
     call :StartLogFile || exit /b 1
     call :MAIN_SYNTAX || exit /b 1
-   
     call :MAIN_CHECK_PARAMETR %* || exit /b 1
     call :MAIN %* || exit /b 1
-    
     call :StopLogFile || exit /b 1
 
 :Exit
