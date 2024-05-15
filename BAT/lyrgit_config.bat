@@ -63,18 +63,23 @@ rem ----------------------------------------------------------------------------
     echo Start !BATNAME! ...
 
     set DEBUG=
-
     set OK=yes
+
     call :MAIN_INIT %0 || exit /b 1
-    call :MAIN_SET || exit /b 1
+    call :__SET_MAIN %0 || exit /b 1
+    echo CURRENT_DIR: !CURRENT_DIR!
     call :StartLogFile || exit /b 1
-    call :MAIN_SYNTAX || exit /b 1
-    call :MAIN_CHECK_PARAMETR %* || exit /b 1
-    call :MAIN %* || exit /b 1
+    call :MAIN_SET || exit /b 1
+    if defined OK if not defined Read_N (
+        call :MAIN_CHECK_PARAMETR %* || exit /b 1
+    )
+    if defined OK (
+        call :MAIN %* || exit /b 1
+    )
     call :StopLogFile || exit /b 1
 
-:Exit
-exit /b 0
+    exit /b 0
+:end
 rem --------------------------------------------------------------------------------
 
 rem -----------------------------------------------
@@ -83,57 +88,35 @@ rem -----------------------------------------------
 :MAIN_INIT
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN_INIT
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
     rem -------------------------------------------------------------------
-    rem PROJECTS - имя проекта
-    rem -------------------------------------------------------------------
-    set PROJECTS=PROJECTS_BAT
-
-    rem -------------------------------------------------------------------
-    rem PROJECTS_LYR_DIR - каталог проектов
-    rem -------------------------------------------------------------------
-    set PROJECTS_LYR_DIR=D:\PROJECTS_LYR
-    rem -------------------------------------------------------------------
     rem SCRIPTS_DIR - Каталог скриптов
     rem -------------------------------------------------------------------
-    if "!SCRIPTS_DIR!" == "" (
+    if not defined SCRIPTS_DIR (
         set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\TOOLS_BAT
         set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\04_BAT\PROJECTS_BAT\TOOLS_BAT
     )
-    rem -------------------------------------------------------------------
-    rem SCRIPT_FULLFILENAME - Файл скрипта [каталог+имя+расширение]
-    rem -------------------------------------------------------------------
-    set SCRIPT_FULLFILENAME=%1
-    rem echo PROJECTS_LYR_DIR: !PROJECTS_LYR_DIR!
-    rem echo SCRIPTS_DIR: !SCRIPTS_DIR!
-    rem echo SCRIPT_FULLFILENAME: !SCRIPT_FULLFILENAME!
-  
-    rem -------------------------------------------------------------------
-    rem PROJECTS_DIR - каталог проекта
-    rem -------------------------------------------------------------------
-    set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\03_SCRIPT\04_BAT\!PROJECTS!
-    rem echo PROJECTS_DIR: !PROJECTS_DIR!
-
+    rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
     rem -------------------------------------------------------------------
     rem LIB_BAT - каталог библиотеки скриптов
     rem -------------------------------------------------------------------
-    if "!LIB_BAT!" == "" (
+    if not defined LIB_BAT (
         set LIB_BAT=!SCRIPTS_DIR!\LIB
         rem echo LIB_BAT: !LIB_BAT!
     )
-    if not exist "!LIB_BAT!"\ (
-        echo ERROR: Каталог библиотеки LYR "!LIB_BAT!" не существует...
+    if not exist !LIB_BAT!\ (
+        echo ERROR: Каталог библиотеки LYR !LIB_BAT! не существует...
         exit /b 0
     )
-
     rem -------------------------------------------------------------------
     rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
     rem -------------------------------------------------------------------
-    if "!SCRIPTS_DIR_KIX!" == "" (
+    if not defined SCRIPTS_DIR_KIX (
         set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\TOOLS_KIX
         set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\03_SCRIPT\01_KIX\PROJECTS_KIX\TOOLS_KIX
@@ -143,40 +126,20 @@ rem beginfunction
     exit /b 0
 rem endfunction
 
-rem -----------------------------------------------
+rem --------------------------------------------------------------------------------
 rem procedure MAIN_SET ()
-rem -----------------------------------------------
+rem --------------------------------------------------------------------------------
 :MAIN_SET
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN_SET
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    call :__SET_VAR_DEFAULT || exit /b 1
-    call :__SET_VAR_SCRIPT !SCRIPT_FULLFILENAME! || exit /b 1
-    call :__SET_VAR_PROJECTS || exit /b 1
-    call :__SET_CHECK_REPO || exit /b 1
-    rem -------------------------------------------------------------------
-    rem LOG_DT_FORMAT -
-    rem set LOG_DT_FORMAT=
-    rem -------------------------------------------------------------------
-    rem LOG_FILENAME_FORMAT - Формат имени файла журнала [FILENAME,DATETIME,...]
-    rem set LOG_FILENAME_FORMAT=
-    rem -------------------------------------------------------------------
-    rem LOG_FILE_ADD - Параметры журнала [0]
-    if "!LOG_FILE_ADD!"=="" set LOG_FILE_ADD=0
-    rem echo LOG_FILE_ADD: !LOG_FILE_ADD!
-    rem -------------------------------------------------------------------
-    rem LOG_FILE_DT - Параметры журнала [0]
-    if "!LOG_FILE_DT!"=="" set LOG_FILE_DT=0
-    rem  -------------------------------------------------------------------
-    rem LOG_DIR - Каталог журнала [каталог]
-    rem set LOG_DIR=
-    rem -------------------------------------------------------------------
-    rem LOG_FILENAME - Файл журнала [имя]
-    rem set LOG_FILENAME=
-    call :__SET_LOG || exit /b 1
+    rem Количество аргументов
+    call :Read_N %* || exit /b 1
+    rem echo Read_N: !Read_N!
 
     exit /b 0
 rem endfunction
@@ -187,13 +150,10 @@ rem ----------------------------------------------------------------------------
 :MAIN_CHECK_PARAMETR
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN_CHECK_PARAMETR
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
-
-    rem Количество аргументов
-    call :Read_N %* || exit /b 1
-    echo Read_N: !Read_N!
 
     rem -------------------------------------
     rem OPTION
@@ -205,20 +165,6 @@ rem beginfunction
     rem Проверка на обязательные аргументы
 
     exit /b 0
-
-rem endfunction
-
-rem --------------------------------------------------------------------------------
-rem procedure MAIN_SYNTAX ()
-rem --------------------------------------------------------------------------------
-:MAIN_SYNTAX
-rem beginfunction
-    set FUNCNAME=%0
-    if defined DEBUG (
-        echo DEBUG: procedure !FUNCNAME! ...
-    )
-
-    exit /b 0
 rem endfunction
 
 rem =================================================
@@ -227,15 +173,14 @@ rem =================================================
 :MAIN
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    if defined OK (
-        call :MAIN_GIT_RUN || exit /b 1
-    )
+    call :MAIN_GIT_RUN || exit /b 1
 
-    rem call :Pause %SLEEP% || exit /b 1
+    rem call :Pause !SLEEP! || exit /b 1
     rem call :PressAnyKey || exit /b 1
 
     exit /b 0
@@ -247,6 +192,7 @@ rem =================================================
 :MAIN_GIT_RUN
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN_GIT_RUN
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
@@ -264,6 +210,9 @@ rem ФУНКЦИИ LIB
 rem =================================================
 rem __SET_LIB.bat
 rem =================================================
+:__SET_MAIN
+%LIB_BAT%\__SET_LIB.bat %*
+exit /b 0
 :__SET_VAR_SCRIPT
 %LIB_BAT%\__SET_LIB.bat %*
 exit /b 0
