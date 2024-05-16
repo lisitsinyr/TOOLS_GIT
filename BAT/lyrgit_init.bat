@@ -2,9 +2,9 @@
 rem -------------------------------------------------------------------
 rem lyrgit_init.bat
 rem ----------------------------------------------------------------------------
-rem 1.Р—Р°РїСѓСЃС‚РёС‚СЊ СЂР°Р±РѕС‡СѓСЋ Р·РѕРЅСѓ [***]
+rem 1.Запустить рабочую зону [***]
 rem ----------------------------------------------------------------------------
-rem РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЂРµРїРѕР·РёС‚Р°СЂРёСЏ РІ С‚РµРєСѓС‰РµРј РєР°С‚РѕР»РѕРіРµ РёР»Рё РІ Р·Р°РґР°РЅРЅРѕРј РєР°С‚Р°Р»РѕРіРµ       
+rem Инициализация репозитария в текущем катологе или в заданном каталоге       
 rem ----------------------------------------------------------------------------
 rem usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
 rem                 [--separate-git-dir <git-dir>] [--object-format=<format>]
@@ -67,7 +67,7 @@ rem beginfunction
     )
 
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR - РљР°С‚Р°Р»РѕРі СЃРєСЂРёРїС‚РѕРІ
+    rem SCRIPTS_DIR - Каталог скриптов
     rem -------------------------------------------------------------------
     if not defined SCRIPTS_DIR (
         set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
@@ -76,18 +76,18 @@ rem beginfunction
     )
     rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
     rem -------------------------------------------------------------------
-    rem LIB_BAT - РєР°С‚Р°Р»РѕРі Р±РёР±Р»РёРѕС‚РµРєРё СЃРєСЂРёРїС‚РѕРІ
+    rem LIB_BAT - каталог библиотеки скриптов
     rem -------------------------------------------------------------------
     if not defined LIB_BAT (
         set LIB_BAT=!SCRIPTS_DIR!\LIB
         rem echo LIB_BAT: !LIB_BAT!
     )
     if not exist !LIB_BAT!\ (
-        echo ERROR: РљР°С‚Р°Р»РѕРі Р±РёР±Р»РёРѕС‚РµРєРё LYR !LIB_BAT! РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚...
+        echo ERROR: Каталог библиотеки LYR !LIB_BAT! не существует...
         exit /b 0
     )
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR_KIX - РљР°С‚Р°Р»РѕРі СЃРєСЂРёРїС‚РѕРІ KIX
+    rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
     rem -------------------------------------------------------------------
     if not defined SCRIPTS_DIR_KIX (
         set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
@@ -110,7 +110,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    rem РљРѕР»РёС‡РµСЃС‚РІРѕ Р°СЂРіСѓРјРµРЅС‚РѕРІ
+    rem Количество аргументов
     call :Read_N %* || exit /b 1
     rem echo Read_N: !Read_N!
 
@@ -135,9 +135,9 @@ rem beginfunction
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
-    rem РџСЂРѕРІРµСЂРєР° РЅР° РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹
+    rem Проверка на обязательные аргументы
 
-    set PN_CAPTION=Р’РІРѕРґ Р·РЅР°С‡РµРЅРёСЏ directory
+    set PN_CAPTION=Ввод значения directory
     set directory=
     call :Read_P directory %1 || exit /b 1
     echo directory: !directory!
@@ -146,8 +146,7 @@ rem beginfunction
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     call :Check_P Comment !Comment! || exit /b 1
-    echo Comment: !Comment!
-
+    rem echo Comment: !Comment!
     rem call :AddLog !loStandard! !TEXT! Comment: !Comment! || exit /b 1
     rem call :AddLog !loTextFile! !TEXT! Comment: !Comment! || exit /b 1
     call :AddLog !loAll! !TEXT! Comment: !Comment! || exit /b 1
@@ -174,7 +173,7 @@ rem beginfunction
         )
         cd "!directory!"
     )
-    rem РЎРѕР·РґР°РЅРёРµ Рё РЅР°СЃС‚СЂРѕР№РєР° СЂРµРїРѕР·РёС‚РѕСЂРёСЏ
+    rem Создание и настройка репозитория
     if not exist ".git\" (
         if defined OK (
             call :MAIN_GIT_RUN || exit /b 1
@@ -195,11 +194,13 @@ rem =================================================
 :MAIN_GIT_RUN
 rem beginfunction
     set FUNCNAME=%0
+    set FUNCNAME=MAIN_GIT_RUN
     if defined DEBUG (
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    set touchRUN=D:\TOOLS\EXE\touch.exe
+    rem set touchRUN=D:\TOOLS\EXE\touch.exe
+    rem echo touchRUN: !touchRUN!
 
     set FileName=.gitignore
     if not exist !FileName! (
@@ -244,7 +245,7 @@ rem beginfunction
 rem endfunction
 
 rem =================================================
-rem Р¤РЈРќРљР¦РР LIB
+rem ФУНКЦИИ LIB
 rem =================================================
 rem __SET_LIB.bat
 rem =================================================

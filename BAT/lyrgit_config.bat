@@ -94,7 +94,7 @@ rem beginfunction
     )
 
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR - РљР°С‚Р°Р»РѕРі СЃРєСЂРёРїС‚РѕРІ
+    rem SCRIPTS_DIR - Каталог скриптов
     rem -------------------------------------------------------------------
     if not defined SCRIPTS_DIR (
         set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
@@ -103,18 +103,18 @@ rem beginfunction
     )
     rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
     rem -------------------------------------------------------------------
-    rem LIB_BAT - РєР°С‚Р°Р»РѕРі Р±РёР±Р»РёРѕС‚РµРєРё СЃРєСЂРёРїС‚РѕРІ
+    rem LIB_BAT - каталог библиотеки скриптов
     rem -------------------------------------------------------------------
     if not defined LIB_BAT (
         set LIB_BAT=!SCRIPTS_DIR!\LIB
         rem echo LIB_BAT: !LIB_BAT!
     )
     if not exist !LIB_BAT!\ (
-        echo ERROR: РљР°С‚Р°Р»РѕРі Р±РёР±Р»РёРѕС‚РµРєРё LYR !LIB_BAT! РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚...
+        echo ERROR: Каталог библиотеки LYR !LIB_BAT! не существует...
         exit /b 0
     )
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR_KIX - РљР°С‚Р°Р»РѕРі СЃРєСЂРёРїС‚РѕРІ KIX
+    rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
     rem -------------------------------------------------------------------
     if not defined SCRIPTS_DIR_KIX (
         set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
@@ -137,7 +137,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    rem РљРѕР»РёС‡РµСЃС‚РІРѕ Р°СЂРіСѓРјРµРЅС‚РѕРІ
+    rem Количество аргументов
     call :Read_N %* || exit /b 1
     rem echo Read_N: !Read_N!
 
@@ -162,7 +162,7 @@ rem beginfunction
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
-    rem РџСЂРѕРІРµСЂРєР° РЅР° РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹
+    rem Проверка на обязательные аргументы
 
     exit /b 0
 rem endfunction
@@ -206,7 +206,7 @@ rem beginfunction
 rem endfunction
 
 rem =================================================
-rem Р¤РЈРќРљР¦РР LIB
+rem ФУНКЦИИ LIB
 rem =================================================
 rem __SET_LIB.bat
 rem =================================================
