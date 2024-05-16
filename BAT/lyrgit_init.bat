@@ -38,8 +38,8 @@ rem ----------------------------------------------------------------------------
     set DEBUG=
     set OK=yes
 
-    call :MAIN_INIT %0 || exit /b 1
-    call :__SET_MAIN %0 || exit /b 1
+    call :MAIN_INIT || exit /b 1
+    call :SET_LIB %0 || exit /b 1
     echo CURRENT_DIR: !CURRENT_DIR!
     call :StartLogFile || exit /b 1
     call :MAIN_SET || exit /b 1
@@ -247,29 +247,21 @@ rem endfunction
 rem =================================================
 rem ‘”Õ ÷»» LIB
 rem =================================================
-rem __SET_LIB.bat
-rem =================================================
-:__SET_MAIN
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_VAR_SCRIPT
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_VAR_DEFAULT
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_VAR_PROJECTS
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_CHECK_REPO
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
-:__SET_LOG
-%LIB_BAT%\__SET_LIB.bat %*
-exit /b 0
 rem =================================================
 rem LYRConst.bat
 rem =================================================
+:SET_LIB
+%LIB_BAT%\LYRConst.bat %*
+exit /b 0
+:SET_CHECK_REPO
+%LIB_BAT%\LYRConst.bat %*
+exit /b 0
+:SET_CHECK_PROJECT
+%LIB_BAT%\LYRConst.bat %*
+exit /b 0
+:SET_KIX
+%LIB_BAT%\LYRConst.bat %*
+exit /b 0
 rem =================================================
 rem LYRDateTime.bat
 rem =================================================
@@ -298,6 +290,18 @@ exit /b 0
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
 :FileAttr
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+:FileSize
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+:CreateDir
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+:CreateFile
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+:CheckFile
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
 :CurrentDir
@@ -337,6 +341,9 @@ exit /b 0
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
 :Read_N
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:Read_F
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
 :PressAnyKey
