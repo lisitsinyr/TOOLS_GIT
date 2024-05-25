@@ -258,12 +258,6 @@ rem =================================================
 :SET_LIB
 %LIB_BAT%\LYRConst.bat %*
 exit /b 0
-:SET_CHECK_REPO
-%LIB_BAT%\LYRConst.bat %*
-exit /b 0
-:SET_CHECK_PROJECT
-%LIB_BAT%\LYRConst.bat %*
-exit /b 0
 :SET_KIX
 %LIB_BAT%\LYRConst.bat %*
 exit /b 0
