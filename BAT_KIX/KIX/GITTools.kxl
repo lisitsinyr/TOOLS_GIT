@@ -1,0 +1,112 @@
+;===============================================================
+; GITTools.kxl
+;===============================================================
+
+;============================================================
+; Uses
+;============================================================
+
+   ;----------------------------------------------------------
+   $Debug = 1
+   ;----------------------------------------------------------
+   $APP = "git.exe"
+
+;-------------------------------------------------
+; Display_Error
+;-------------------------------------------------
+function Display_Error($Error)
+;begin
+   select
+      case $ERROR =  0 LogAdd($Log, $LogFile, "I", "00 Нет ошибок")
+      case 1
+         LogAdd($Log, $LogFile, "I", $ERROR+" неопределенная ошибка")
+   endselect
+EndFunction
+
+;-------------------------------------------------
+; RUN_GIT($APP)
+;-------------------------------------------------
+;usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+;           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+;           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+;           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+;           [--config-env=<name>=<envvar>] <command> [<args>]
+;-------------------------------------------------
+function RUN_GIT($A_APP)
+;begin
+   ; cd $D_APP
+   $Program = $A_APP
+   if $Command
+      $Program = $Program+" "+$Command
+   endif
+   if $A1 $Program = $Program+" "+$A1 endif
+   if $A2 $Program = $Program+" "+$A2 endif
+   if $A3 $Program = $Program+" "+$A3 endif
+   if $A4 $Program = $Program+" "+$A4 endif
+   if $A5 $Program = $Program+" "+$A5 endif
+   if $A6 $Program = $Program+" "+$A6 endif
+   
+   ;SHELL @LDRIVE + "\UPDATE.EXE"
+   ;SHELL "%COMSPEC% /e:1024 /c DIR C:"
+   ;SHELL "SETW USERNAME=@USERID"
+   ;SHELL "CMD.EXE /C COPY " + @LDRIVE + "\FILE.TXT C:\"
+   ;SHELL "%COMSPEC% /C COPY Z:\FILE.TXT C:\"
+   ;SHELL "C:\WINNT\SYSTEM32\CMD /E:1024 /C " + @LDRIVE + "\SMSLS.BAT"
+
+   $Program = $Program
+   LogAdd($Log, $LogFile, "I", $Program)
+
+   ;$Program2 = $Program+" >> "+$LOG_FULLFILENAME
+   ;LogAdd($Log, $LogFile, "I", $Program2)
+  
+   Shell $Program
+
+   LogAdd($Log, $LogFile, "I", " ")
+
+   if @Error > 0 
+      Display_Error(@Error)
+   endif
+EndFunction
+
+;-------------------------------------------------
+; lyrgit_config
+;-------------------------------------------------
+function lyrgit_config
+;begin
+    ; git config --list --show-origin --show-scope
+    $Command = "config"
+    $A1 = "--list --show-origin --show-scope"
+    RUN_GIT($APP)
+    $Done = 1
+EndFunction
+
+;-------------------------------------------------
+; Command_ERROR
+;-------------------------------------------------
+function Command_ERROR
+;begin
+    ;CLS
+    WriteLN ("w+/n",  "Команды системы")
+    WriteLN ("b+/n",  "lyrgit_config - ")
+    WriteLN ("g+/n", "   git config --list --show-origin --show-scope")
+    WriteLN ("w+/n",  "")
+EndFunction
+
+;-------------------------------------------------
+; Verba
+;-------------------------------------------------
+function GIT ()
+;begin
+    ;LogAdd($Log, $LogFile, "I", $BATFILENAME)
+    ;LogAdd($Log, $LogFile, "I", $P1)
+    ;LogAdd($Log, $LogFile, "I", $P2)
+    ;LogAdd($Log, $LogFile, "I", $P3)
+    ;LogAdd($Log, $LogFile, "I", $P4)
+    select
+        case LCase($SCRIPT_FILENAME) = "lyrgit_config"
+            lyrgit_config
+        case 1
+            Command_ERROR
+    endselect                                                                                                                        
+    $Done = 1
+EndFunction
