@@ -294,9 +294,6 @@ rem =================================================
 :Pause
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
-:Check_P
-%LIB_BAT%\LYRSupport.bat %*
-exit /b 0
 :Read_P
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0

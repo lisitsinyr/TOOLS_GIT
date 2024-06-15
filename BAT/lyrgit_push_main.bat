@@ -160,7 +160,7 @@ rem beginfunction
     set PN_CAPTION=Comment
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    call :Check_P Comment "%Comment%" || exit /b 1
+    call :Read_P Comment "%Comment%" || exit /b 1
     echo Comment: %Comment%
 
     exit /b 0
@@ -297,9 +297,6 @@ rem =================================================
 rem LYRSupport.bat
 rem =================================================
 :Pause
-%LIB_BAT%\LYRSupport.bat %*
-exit /b 0
-:Check_P
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
 :Read_P
