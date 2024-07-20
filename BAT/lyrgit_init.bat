@@ -228,23 +228,17 @@ rem beginfunction
         echo ------------ >> !FileName!
     )
 
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git init >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git init
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git add --all >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git add --all
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git commit -m "!Comment!" >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git commit -m "!Comment!"
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git branch -M main >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git branch -M main
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git init
+    git init >> !LOG_FULLFILENAME!
+
+    echo ...git add --all
+    git add --all >> !LOG_FULLFILENAME!
+
+    echo ...git commit -m "!Comment!"
+    git commit -m "!Comment!" >> !LOG_FULLFILENAME!
+
+    echo ...git branch -M main
+    git branch -M main >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction

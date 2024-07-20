@@ -202,9 +202,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    echo --------------------------------------------------------------- > !LOG_FULLFILENAME!
-    echo ...git config --list --show-origin --show-scope >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git config --list --show-origin --show-scope
     git config --list --show-origin --show-scope  >> !LOG_FULLFILENAME!
 
     exit /b 0
