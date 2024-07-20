@@ -161,7 +161,7 @@ rem beginfunction
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     call :Read_P Comment "%Comment%" || exit /b 1
-    echo Comment: %Comment%
+    rem echo Comment: %Comment%
 
     exit /b 0
 rem endfunction
@@ -196,21 +196,14 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git add --all >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git add --all
+    echo ...git add --all
+    git add --all >> !LOG_FULLFILENAME!
     
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git commit -m "%Comment%" >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git commit -m "%Comment%"
+    echo ...git commit -m "%Comment%"
+    git commit -m "%Comment%" >> !LOG_FULLFILENAME!
 
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    echo ...git push -u origin main >> !LOG_FULLFILENAME!
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git push -u origin main
-    echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
+    echo ...git push -u origin main
+    git push -u origin main >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction
