@@ -66,7 +66,7 @@ rem ----------------------------------------------------------------------------
     call :SET_LIB %0 || exit /b 1
     rem echo CURRENT_DIR: !CURRENT_DIR!
 
-    call :StartLogFile || exit /b 1
+    rem call :StartLogFile || exit /b 1
     set OK=yes
     call :MAIN_SET %* || exit /b 1
     if defined OK if not defined Read_N (
@@ -75,7 +75,7 @@ rem ----------------------------------------------------------------------------
     if defined OK (
         call :MAIN %* || exit /b 1
     )
-    call :StopLogFile || exit /b 1
+    rem call :StopLogFile || exit /b 1
 
     exit /b 0
 :end
@@ -199,17 +199,17 @@ rem beginfunction
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     echo ...git add --all >> !LOG_FULLFILENAME!
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git add --all >> !LOG_FULLFILENAME!
+    git add --all
     
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     echo ...git commit -m "%Comment%" >> !LOG_FULLFILENAME!
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git commit -m "%Comment%" >> !LOG_FULLFILENAME!
+    git commit -m "%Comment%"
 
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
     echo ...git push -u origin main >> !LOG_FULLFILENAME!
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
-    git push -u origin main >> !LOG_FULLFILENAME!
+    git push -u origin main
     echo --------------------------------------------------------------- >> !LOG_FULLFILENAME!
 
     exit /b 0
