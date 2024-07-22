@@ -70,6 +70,8 @@ rem     --[no-]set-upstream   set upstream for git pull/fetch
 rem ----------------------------------------------------------------------------
 chcp 1251>NUL
 
+setlocal enabledelayedexpansion
+
 :begin
     set BATNAME=%~nx0
     echo Start !BATNAME! ...
