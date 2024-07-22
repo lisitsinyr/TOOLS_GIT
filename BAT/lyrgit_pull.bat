@@ -71,6 +71,9 @@ rem ----------------------------------------------------------------------------
 chcp 1251>NUL
 
 :begin
+    set BATNAME=%~nx0
+    echo Start !BATNAME! ...
+
     echo ...git pull
     git pull
 
