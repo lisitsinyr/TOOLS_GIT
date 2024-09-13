@@ -55,8 +55,8 @@ chcp 1251
 
 :begin
 echo ---------------------------------------------------------------
-echo git config --global --add safe.directory D:/PROJECTS_LYR/CHECK_LIST/DESKTOP/02_Python/PROJECTS_PY/TESTGIT
+echo git config --global --add safe.directory D:/PROJECTS_LYR/CHECK_LIST/DESKTOP/Python/PROJECTS_PY/TESTGIT
 echo ---------------------------------------------------------------
-git config --global --add safe.directory D:/PROJECTS_LYR/CHECK_LIST/DESKTOP/02_Python/PROJECTS_PY/TESTGIT
+git config --global --add safe.directory D:/PROJECTS_LYR/CHECK_LIST/DESKTOP/Python/PROJECTS_PY/TESTGIT
 
 :Exit

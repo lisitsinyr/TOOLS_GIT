@@ -133,7 +133,7 @@ set USERNAME=%USERNAME%
 rem echo USERNAME: %USERNAME%
 set PROJECTS_LYR_DIR=D:\PROJECTS_LYR
 rem echo PROJECTS_LYR_DIR: !PROJECTS_LYR_DIR!
-set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\SCRIPT\04_BAT\!PROJECTS!
+set PROJECTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\SCRIPT\BAT\!PROJECTS!
 rem echo PROJECTS_DIR: !PROJECTS_DIR!
 rem ...Файл скрипта: каталог+имя+расширение
 set SCRIPT_FULLFILENAME=%~f0
@@ -150,7 +150,7 @@ rem echo -------------------------------------------------------
 rem Каталог журнала: каталог
 if "%LOG_DIR%" == "" (
     rem set LOG_FULLFILENAME=%~d0%~p0LOGS
-    set LOG_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\SCRIPT\04_BAT\!PROJECTS!\LOGS
+    set LOG_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\SCRIPT\BAT\!PROJECTS!\LOGS
 )
 rem echo LOG_DIR: %LOG_DIR%
 if exist %LOG_DIR% (
