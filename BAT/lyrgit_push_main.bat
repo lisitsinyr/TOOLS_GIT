@@ -47,42 +47,14 @@ rem ----------------------------------------------------------------------------
 rem 
 rem --------------------------------------------------------------------------------
 :begin
-    set BATNAME=%~nx0
-    echo Start !BATNAME! ...
-
-    set DEBUG=
-
-    rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR - Каталог скриптов
-    rem LIB_BAT - каталог библиотеки скриптов
-    rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
-    rem -------------------------------------------------------------------
-    call :MAIN_INIT %* || exit /b 1
-
-    rem Количество аргументов
-    call :Read_N %* || exit /b 1
-    rem echo Read_N: !Read_N!
-
-    call :SET_LIB %0 || exit /b 1
-    rem echo CURRENT_DIR: !CURRENT_DIR!
-
-    rem call :StartLogFile || exit /b 1
-    set OK=yes
-    call :MAIN_SET %* || exit /b 1
-    if defined OK if not defined Read_N (
-        call :MAIN_CHECK_PARAMETR %* || exit /b 1
-    )
-    if defined OK (
-        call :MAIN %* || exit /b 1
-    )
-    rem call :StopLogFile || exit /b 1
+    call :MAIN %* || exit /b 1
 
     exit /b 0
 :end
 rem --------------------------------------------------------------------------------
 
 rem -----------------------------------------------
-rem procedure MAIN_INIT (FULLFILENAME, DEBUG)
+rem procedure MAIN_INIT ()
 rem -----------------------------------------------
 :MAIN_INIT
 rem beginfunction
@@ -93,32 +65,55 @@ rem beginfunction
     )
 
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR - Каталог скриптов
+    rem PROJECTS_LYR_ROOT - Каталог ROOT
+    rem -------------------------------------------------------------------
+    rem set PROJECTS_LYR_ROOT=D:\WORK\WIN
+    set PROJECTS_LYR_ROOT=D:
+    rem echo PROJECTS_LYR_ROOT:!PROJECTS_LYR_ROOT!
+
+    rem -------------------------------------------------------------------
+    rem PROJECTS_LYR_DIR - Каталог проектов LYR
+    rem -------------------------------------------------------------------
+    set PROJECTS_LYR_DIR=!PROJECTS_LYR_ROOT!\PROJECTS_LYR
+    rem echo PROJECTS_LYR_DIR:!PROJECTS_LYR_DIR!
+    if not exist "!PROJECTS_LYR_DIR!"\ (
+        rem echo INFO: Dir "!PROJECTS_LYR_DIR!" not exist ...
+        rem echo INFO: Create "!PROJECTS_LYR_DIR!" ...
+        rem mkdir "!PROJECTS_LYR_DIR!"
+        exit /b 1
+    )
+
+    rem -------------------------------------------------------------------
+    rem SCRIPTS_DIR - Каталог скриптов BAT
     rem -------------------------------------------------------------------
     if not defined SCRIPTS_DIR (
-        set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
-        set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\SCRIPT\BAT\PROJECTS_BAT\TOOLS_SRC_BAT
+        rem set SCRIPTS_DIR=D:\TOOLS\TOOLS_BAT
+        rem set SCRIPTS_DIR=D:\PROJECTS_LYR\CHECK_LIST\SCRIPT\BAT\PROJECTS_BAT\TOOLS_SRC_BAT\SRC
+        set SCRIPTS_DIR=!PROJECTS_LYR_DIR!\CHECK_LIST\SCRIPT\BAT\PROJECTS_BAT\TOOLS_SRC_BAT\SRC
     )
-    rem echo SCRIPTS_DIR: %SCRIPTS_DIR%
+    rem echo SCRIPTS_DIR:!SCRIPTS_DIR!
+
     rem -------------------------------------------------------------------
-    rem LIB_BAT - каталог библиотеки скриптов
+    rem LIB_BAT - каталог библиотеки скриптов BAT
     rem -------------------------------------------------------------------
     if not defined LIB_BAT (
-        set LIB_BAT=!SCRIPTS_DIR!\SRC\LIB
-        rem echo LIB_BAT: !LIB_BAT!
+        set LIB_BAT=!SCRIPTS_DIR!\LIB
     )
+    rem echo LIB_BAT:!LIB_BAT!
     if not exist !LIB_BAT!\ (
         echo ERROR: Каталог библиотеки LYR !LIB_BAT! не существует...
-        exit /b 0
+        exit /b 1
     )
+
     rem -------------------------------------------------------------------
-    rem SCRIPTS_DIR_KIX - Каталог скриптов KIX
+    rem Количество аргументов
     rem -------------------------------------------------------------------
-    if not defined SCRIPTS_DIR_KIX (
-        set SCRIPTS_DIR_KIX=D:\TOOLS\TOOLS_KIX
-        set SCRIPTS_DIR_KIX=D:\PROJECTS_LYR\CHECK_LIST\SCRIPT\KIX\PROJECTS_KIX\TOOLS_SRC_KIX
-    )
-    rem echo SCRIPTS_DIR_KIX: !SCRIPTS_DIR_KIX!
+    call :Read_N %* || exit /b 1
+
+    rem -------------------------------------------------------------------
+    rem Настройка среды
+    rem -------------------------------------------------------------------
+    call :SET_LIB %~f0 || exit /b 1
 
     exit /b 0
 rem endfunction
@@ -151,37 +146,42 @@ rem beginfunction
     rem -------------------------------------
     rem OPTION
     rem -------------------------------------
+    set OPTION=
+    set O1_Name=O1
+    set O1_Caption=O1_Caption
+    set O1_Default=O1_Default
+    set O1=!O1_Default!
+    set PN_CAPTION=!O1_Caption!
+    rem call :Read_P O1 !O1! || exit /b 1
+    rem echo O1:!O1!
+    rem if defined O1 (
+    rem     set OPTION=!OPTION! -!O1_Name! "!O1!"
+    rem ) else (
+    rem     echo INFO: O1 [O1_Name:!O1_Name! O1_Caption:!O1_Caption!] not defined ...
+    rem )
+    rem echo OPTION:!OPTION!
 
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
-    rem Проверка на обязательные аргументы
-
-    set PN_CAPTION=Comment
-    set Comment="Git Bash commit update"
-    set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    call :Read_P Comment "%Comment%" || exit /b 1
-    rem echo Comment: %Comment%
-
-    exit /b 0
-rem endfunction
-
-rem =================================================
-rem procedure MAIN ()
-rem =================================================
-:MAIN
-rem beginfunction
-    set FUNCNAME=%0
-    set FUNCNAME=MAIN
-    if defined DEBUG (
-        echo DEBUG: procedure !FUNCNAME! ...
+    set ARGS=
+    set A1_Name=Comment
+    set A1_Caption=Comment
+    set A1_Default=Git Bash commit update
+    set A1_Default=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+    set A1=!A1_Default!
+    set PN_CAPTION=!A1_Caption!
+    call :Read_P A1 !A1! || exit /b 1
+    rem echo A1:!A1!
+    if defined A1 (
+        set ARGS=!ARGS! "!A1!"
+    ) else (
+        echo ERROR: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
+        set OK=
+        exit /b 1
     )
-
-    call :MAIN_GIT_RUN || exit /b 1
-
-    rem call :Pause !SLEEP! || exit /b 1
-    rem call :PressAnyKey || exit /b 1
-
+    rem echo ARGS:!ARGS!
+    
     exit /b 0
 rem endfunction
 
@@ -196,42 +196,143 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    echo ...git add --all
+    rem echo ...git add --all
+    call :WritePROCESS ...git add --all
     git add --all >> !LOG_FULLFILENAME!
     
-    echo ...git commit -m "%Comment%"
-    git commit -m "%Comment%" >> !LOG_FULLFILENAME!
+    rem echo ...git commit -m "%Comment%"
+    call :WritePROCESS ...git commit -m !ARGS!
+    git commit -m "!Comment!" >> !LOG_FULLFILENAME!
 
-    echo ...git push -u origin main
+    rem echo ...git push -u origin main
+    call :WritePROCESS ...git push -u origin main
     git push -u origin main >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction
 
 rem =================================================
+rem procedure MAIN_FUNC ()
+rem =================================================
+:MAIN_FUNC
+rem beginfunction
+    set FUNCNAME=%0
+    set FUNCNAME=MAIN_FUNC
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
+    )
+
+    call :MAIN_GIT_RUN || exit /b 1
+
+    rem call :Pause !SLEEP! || exit /b 1
+    rem call :PressAnyKey || exit /b 1
+
+    exit /b 0
+rem endfunction
+
+rem =================================================
+rem procedure MAIN (%*)
+rem =================================================
+:MAIN
+rem beginfunction
+    set FUNCNAME=%0
+    set FUNCNAME=MAIN
+    if defined DEBUG (
+        echo DEBUG: procedure !FUNCNAME! ...
+    )
+
+    set BATNAME=%~nx0
+    echo Start !BATNAME! ...
+
+    set DEBUG=
+
+    set /a LOG_FILE_ADD=0
+
+    call :MAIN_INIT || exit /b 1
+
+    call :StartLogFile || exit /b 1
+
+    set OK=yes
+    
+    call :MAIN_SET || exit /b 1
+
+    rem if defined OK if not defined Read_N (
+    rem     call :MAIN_CHECK_PARAMETR %* || exit /b 1
+    rem )
+    call :MAIN_CHECK_PARAMETR %* || exit /b 1
+        
+    if defined OK (
+        call :MAIN_FUNC || exit /b 1
+    )
+    
+    call :StopLogFile || exit /b 1
+
+    exit /b 0
+rem endfunction
+rem =================================================
+
+rem =================================================
 rem ФУНКЦИИ LIB
 rem =================================================
+
 rem =================================================
 rem LYRConst.bat
 rem =================================================
+:LYRConst
+%LIB_BAT%\LYRConst.bat %*
+exit /b 0
+
+rem =================================================
+rem LYRDEPLOY.bat
+rem =================================================
+:LYRDEPLOY
+%LIB_BAT%\LYRDEPLOY.bat %*
+exit /b 0
+:REPO_WORK
+%LIB_BAT%\LYRDEPLOY.bat %*
+exit /b 0
+:git_pull
+%LIB_BAT%\LYRDEPLOY.bat %*
+exit /b 0
+:DEPLOY_PROJECT
+%LIB_BAT%\LYRDEPLOY.bat %*
+exit /b 0
+
+rem =================================================
+rem LYRLIB.bat
+rem =================================================
+:LYRLIB
+%LIB_BAT%\LYRLIB.bat %*
+exit /b 0
 :SET_LIB
+%LIB_BAT%\LYRLIB.bat %*
+exit /b 0
+:SET_POETRY
 %LIB_BAT%\LYRLIB.bat %*
 exit /b 0
 :SET_KIX
 %LIB_BAT%\LYRLIB.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRDateTime.bat
 rem =================================================
+:LYRDateTime
+%LIB_BAT%\LYRDateTime.bat %*
+exit /b 0
 :YYYYMMDDHHMMSS
 %LIB_BAT%\LYRDateTime.bat %*
 exit /b 0
 :DateTime
 %LIB_BAT%\LYRDateTime.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRFileUtils.bat
 rem =================================================
+:LYRFileUtils
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
 :ExtractFileDir
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
@@ -265,10 +366,17 @@ exit /b 0
 :CurrentDir
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
+:COPY_FILES
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+:XCOPY_FILES
+%LIB_BAT%\LYRFileUtils.bat %*
+exit /b 0
+
 rem =================================================
 rem LYRLog.bat
 rem =================================================
-:FormatStr
+:LYRLog
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
 :AddLog
@@ -283,12 +391,44 @@ exit /b 0
 :StopLogFile
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRStrUtils.bat
 rem =================================================
+:LYRStrUtils
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:TrimLeft
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:TrimRight
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:Trim
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:Left
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:Mid
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:TrimQuotes
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+:ListToStr
+%LIB_BAT%\LYRStrUtils.bat %*
+exit /b 0
+
 rem =================================================
 rem LYRSupport.bat
 rem =================================================
+:LYRSupport
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:PressAnyKey
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
 :Pause
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
@@ -301,7 +441,100 @@ exit /b 0
 :Read_F
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
-:PressAnyKey
+:GetDir
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
+:GetFile
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:FORCicle
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:GetSET
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:GetCMD
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+:CheckErrorlevel
+%LIB_BAT%\LYRSupport.bat %*
+exit /b 0
+
+rem =================================================
+rem LYRParserINI.bat
+rem =================================================
+:LYRParserINI
+%LIB_BAT%\LYRParserINI.bat %*
+exit /b 0
+:GetINI
+%LIB_BAT%\LYRParserINI.bat %*
+exit /b 0
+:SetINI
+%LIB_BAT%\LYRParserINI.bat %*
+exit /b 0
+:GetINIParametr
+%LIB_BAT%\LYRParserINI.bat %*
+exit /b 0
+:GetFileParser
+%LIB_BAT%\LYRParserINI.bat %*
+exit /b 0
+
+rem =================================================
+rem LYRConsole.bat
+rem =================================================
+:LYRConsole
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:Write
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteCR
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteLN
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteLOG
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:SetColor
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:ReSetColor
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteNOTSET
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteDEBUG
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteINFO
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteWARNING
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteERROR
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteCRITICAL
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteBEGIN
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteEND
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WritePROCESS
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteDEBUGTEXT
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:WriteTEXT
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+
 rem =================================================
