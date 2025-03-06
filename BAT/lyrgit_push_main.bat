@@ -207,13 +207,9 @@ rem beginfunction
 
     rem echo ...git push -u origin main
     call :WritePROCESS ...git push -u origin main
-
-    call :SetColor !cTEXT!
+    rem call :SetColor !cTEXT!
     git push -u origin main >> !LOG_FULLFILENAME!
-    rem call :Write 义耱
-    rem call :WriteCR
-    rem call :Write 义耱 义耱 义耱
-    call :ReSetColor
+    rem call :ReSetColor
 
     exit /b 0
 rem endfunction
