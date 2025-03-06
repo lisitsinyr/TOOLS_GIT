@@ -198,7 +198,13 @@ rem beginfunction
 
     rem echo ...git pull
     call :WritePROCESS ...git pull
-    rem git pull
+    
+    call :SetColor !cTEXT!
+    git pull
+    rem call :Write 义耱
+    rem call :WriteCR
+    rem call :Write 义耱 义耱 义耱
+    call :ReSetColor
 
     exit /b 0
 rem endfunction
