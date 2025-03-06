@@ -203,17 +203,17 @@ rem beginfunction
     
     rem echo ...git commit -m "%Comment%"
     call :WritePROCESS ...git commit -m !Comment!
+    git commit -m !Comment! >> !LOG_FULLFILENAME!
+
+    rem echo ...git push -u origin main
+    call :WritePROCESS ...git push -u origin main
 
     call :SetColor !cTEXT!
-    git commit -m !Comment! >> !LOG_FULLFILENAME!
+    git push -u origin main >> !LOG_FULLFILENAME!
     rem call :Write 义耱
     rem call :WriteCR
     rem call :Write 义耱 义耱 义耱
     call :ReSetColor
-
-    rem echo ...git push -u origin main
-    call :WritePROCESS ...git push -u origin main
-    git push -u origin main >> !LOG_FULLFILENAME!
 
     exit /b 0
 rem endfunction
