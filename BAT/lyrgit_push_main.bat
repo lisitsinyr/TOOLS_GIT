@@ -174,6 +174,7 @@ rem beginfunction
     call :Read_P A1 !A1! || exit /b 1
     rem echo A1:!A1!
     if defined A1 (
+        set Comment="!A1!"
         set ARGS=!ARGS! "!A1!"
     ) else (
         echo ERROR: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
@@ -201,8 +202,8 @@ rem beginfunction
     git add --all >> !LOG_FULLFILENAME!
     
     rem echo ...git commit -m "%Comment%"
-    call :WritePROCESS ...git commit -m !ARGS!
-    git commit -m "!Comment!" >> !LOG_FULLFILENAME!
+    call :WritePROCESS ...git commit -m !Comment!
+    git commit -m !Comment! >> !LOG_FULLFILENAME!
 
     rem echo ...git push -u origin main
     call :WritePROCESS ...git push -u origin main
