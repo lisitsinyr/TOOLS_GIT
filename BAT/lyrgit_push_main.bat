@@ -207,9 +207,14 @@ rem beginfunction
 
     rem echo ...git push -u origin main
     call :WritePROCESS ...git push -u origin main
-    rem call :SetColor !cTEXT!
+ 
+    call :SetColor !cTEXT!
     git push -u origin main >> !LOG_FULLFILENAME!
-    rem call :ReSetColor
+    rem call :WriteCR
+    rem call :ReSetColorCR
+    call :ReSetColor
+    rem <nul set /p strTemp=!sRESET!
+
 
     exit /b 0
 rem endfunction
@@ -504,6 +509,9 @@ exit /b 0
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :ReSetColor
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:ReSetColorCR
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :WriteNOTSET

@@ -200,7 +200,7 @@ rem beginfunction
     call :WritePROCESS ...git pull
     call :SetColor !cTEXT!
     git pull
-    call :ReSetColor
+    call :ReSetColorCR
 
     exit /b 0
 rem endfunction
@@ -495,6 +495,9 @@ exit /b 0
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :ReSetColor
+%LIB_BAT%\LYRConsole.bat %*
+exit /b 0
+:ReSetColorCR
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :WriteNOTSET
