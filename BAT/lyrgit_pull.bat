@@ -197,7 +197,7 @@ rem beginfunction
     )
 
     rem echo ...git pull
-    call :WritePROCESS ...git pull
+    call :WritePROCESS ...git pull...
     call :SetColor !cTEXT!
     git pull
     call :ReSetColorCR
