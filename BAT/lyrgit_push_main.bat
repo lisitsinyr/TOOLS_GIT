@@ -208,7 +208,7 @@ rem beginfunction
     rem echo ...git push -u origin main
     call :WritePROCESS ...git push -u origin main
 
-    call :SetColor !cDEBUGTEXT!
+    call :SetColor !cTEXT!
     git push -u origin main >> !LOG_FULLFILENAME!
     rem call :Write Тест
     rem call :WriteCR
