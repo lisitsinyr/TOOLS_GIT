@@ -223,7 +223,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    echo ...git pull
+    rem echo ...git pull
     call :WritePROCESS ...git pull...
     call :SetColor !cTEXT!
     git clone !URL!
