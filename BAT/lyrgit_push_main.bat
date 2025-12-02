@@ -171,7 +171,7 @@ rem beginfunction
     set A1_Default=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     set A1=!A1_Default!
     set PN_CAPTION=!A1_Caption!
-    call :Read_P A1 !A1! || exit /b 1
+    call :Read_P A1 !A1! !A1_Caption! "" || exit /b 1
     rem echo A1:!A1!
     if defined A1 (
         set Comment="!A1!"
