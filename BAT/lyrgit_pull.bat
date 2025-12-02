@@ -147,39 +147,12 @@ rem beginfunction
     rem OPTION
     rem -------------------------------------
     set OPTION=
-    set O1_Name=O1
-    set O1_Caption=O1_Caption
-    set O1_Default=O1_Default
-    set O1=!O1_Default!
-    set PN_CAPTION=!O1_Caption!
-    rem call :Read_P O1 !O1! || exit /b 1
-    rem echo O1:!O1!
-    rem if defined O1 (
-    rem     set OPTION=!OPTION! -!O1_Name! "!O1!"
-    rem ) else (
-    rem     echo INFO: O1 [O1_Name:!O1_Name! O1_Caption:!O1_Caption!] not defined ...
-    rem )
     rem echo OPTION:!OPTION!
 
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
     set ARGS=
-    set A1_Name=Comment
-    set A1_Caption=Comment
-    set A1_Default=Git Bash commit update
-    set A1_Default=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    set A1=!A1_Default!
-    set PN_CAPTION=!A1_Caption!
-    rem call :Read_P A1 !A1! || exit /b 1
-    rem echo A1:!A1!
-    rem if defined A1 (
-    rem     set ARGS=!ARGS! "!A1!"
-    rem ) else (
-    rem     echo ERROR: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
-    rem     set OK=
-    rem     exit /b 1
-    rem )
     rem echo ARGS:!ARGS!
     
     exit /b 0
