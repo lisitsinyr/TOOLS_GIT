@@ -184,7 +184,7 @@ rem beginfunction
     set VarDefault=Git Bash commit update
     set VarDefault=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     rem echo VarDefault:!VarDefault!
-    if not defined !VarName! (
+    if not defined !%VarName%! (
         call :Read_P !VarName! "!VarValue!" "!VarCaption!" "!VarDefault!" || exit /b 1
     )
     if defined !VarName! (
