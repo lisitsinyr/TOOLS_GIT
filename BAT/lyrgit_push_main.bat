@@ -189,6 +189,7 @@ rem beginfunction
     )
     if defined !VarName! (
         set ARGS=!ARGS! "!VarName!"
+        set Comment=!VarName!
     ) else (
         echo INFO: !VarName! not defined ...
         set OK=
