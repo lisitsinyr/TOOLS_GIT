@@ -57,10 +57,11 @@ rem ----------------------------------------------------------------------------
     call :Read_N %* || exit /b 1
     rem echo Read_N: !Read_N!
 
-    if defined OK if not defined Read_N (
-        call :MAIN_CHECK_PARAMETR %* || exit /b 1
-    )
-    
+    rem if defined OK if defined Read_N (
+    rem     call :MAIN_CHECK_PARAMETR %* || exit /b 1
+    rem )
+    call :MAIN_CHECK_PARAMETR %* || exit /b 1
+
     if defined OK (
         call :MAIN %* || exit /b 1
     )
