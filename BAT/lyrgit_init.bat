@@ -44,19 +44,23 @@ rem ----------------------------------------------------------------------------
     rem -------------------------------------------------------------------
     call :MAIN_INIT %* || exit /b 1
 
-    rem Количество аргументов
-    call :Read_N %* || exit /b 1
-    rem echo Read_N: !Read_N!
-
     call :SET_LIB %0 || exit /b 1
     rem echo CURRENT_DIR: !CURRENT_DIR!
 
     call :StartLogFile || exit /b 1
+
     set OK=yes
+    
     call :MAIN_SET %* || exit /b 1
+
+    rem Количество аргументов
+    call :Read_N %* || exit /b 1
+    rem echo Read_N: !Read_N!
+
     if defined OK if not defined Read_N (
         call :MAIN_CHECK_PARAMETR %* || exit /b 1
     )
+    
     if defined OK (
         call :MAIN %* || exit /b 1
     )
@@ -144,14 +148,14 @@ rem beginfunction
 
     set PN_CAPTION=Ввод значения directory
     set directory=
-    call :Read_P directory %1 !PN_CAPTION! "" || exit /b 1
+    call :Read_P directory "%1" "!PN_CAPTION!" "" || exit /b 1
     echo directory: !directory!
 
     set PN_CAPTION=Comment
     set Comment="Git Bash commit update"
     set Comment=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    call :Read_P Comment !Comment! !PN_CAPTION! "" || exit /b 1
-    rem echo Comment: !Comment!
+    echo Comment: !Comment!
+    call :Read_P Comment "!Comment!" !PN_CAPTION! "" || exit /b 1
     rem call :AddLog !loStandard! !TEXT! Comment: !Comment! || exit /b 1
     rem call :AddLog !loTextFile! !TEXT! Comment: !Comment! || exit /b 1
     call :AddLog !loAll! !TEXT! Comment: !Comment! || exit /b 1
