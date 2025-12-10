@@ -277,9 +277,6 @@ rem beginfunction
     
     call :MAIN_SET || exit /b 1
 
-    rem if defined OK if not defined Read_N (
-    rem     call :MAIN_CHECK_PARAMETR %* || exit /b 1
-    rem )
     call :MAIN_CHECK_PARAMETR %* || exit /b 1
         
     if defined OK (
