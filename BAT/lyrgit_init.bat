@@ -148,8 +148,8 @@ rem beginfunction
     rem Проверка на обязательные аргументы
 
     set PN_CAPTION=Ввод значения directory
-    set directory=
-    call :Read_P directory "%1" "!PN_CAPTION!" "" || exit /b 1
+    set directory=%1
+    call :Read_P directory "!directory!" "!PN_CAPTION!" "" || exit /b 1
     echo directory: !directory!
 
     set PN_CAPTION=Comment
