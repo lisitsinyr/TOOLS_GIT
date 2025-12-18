@@ -147,41 +147,24 @@ rem beginfunction
     rem OPTION
     rem -------------------------------------
     set OPTION=
-    echo OPTION:!OPTION!
+    rem echo OPTION:!OPTION!
 
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
     set ARGS=
 
-    rem set A1_Name=Comment
-    rem set A1_Caption=Comment
-    rem set A1_Default=Git Bash commit update
-    rem set A1_Default=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    rem set A1=!A1_Default!
-    rem set PN_CAPTION=!A1_Caption!
-    rem call :Read_P A1 !A1! !A1_Caption! "" || exit /b 1
-    rem echo A1:!A1!
-    rem if defined A1 (
-    rem     set Comment="!A1!"
-    rem     set ARGS=!ARGS! "!A1!"
-    rem ) else (
-    rem     echo ERROR: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
-    rem     set OK=
-    rem     exit /b 1
-    rem )
-
     rem -------------------------------------------------------------------
     rem A1
     rem -------------------------------------------------------------------
     set VarName=Comment
     rem echo VarName:!VarName!
-    set VarValue=Git Bash commit update
+    rem set VarValue=Git Bash commit update
     set VarValue=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     rem echo VarValue:!VarValue!
     set VarCaption=Comment_caption
     rem echo VarCaption:!VarCaption!
-    set VarDefault=Git Bash commit update
+    rem set VarDefault=Git Bash commit update
     set VarDefault=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
     rem echo VarDefault:!VarDefault!
     if not defined !%VarName%! (
@@ -195,7 +178,7 @@ rem beginfunction
         exit /b 1
     )
 
-    echo ARGS:!ARGS!
+    rem echo ARGS:!ARGS!
 
     exit /b 0
 rem endfunction
@@ -212,27 +195,26 @@ rem beginfunction
     )
 
     rem echo ...git add --all
-    call :WritePROCESS ...git add --all
-    rem git add --all >> !LOG_FULLFILENAME!
-    git add --all
+    call :WritePROCESS .... git add --all
+    git add --all >> !LOG_FULLFILENAME!
+    rem git add --all
     
-    rem echo ...git commit -m "%Comment%"
-    call :WritePROCESS ...git commit -m "!Comment!"
-    rem git commit -m !Comment! >> !LOG_FULLFILENAME!
-    git commit -m "!Comment!"
+    rem echo ...git commit -m "!Comment!"
+    call :WritePROCESS .... git commit -m "!Comment!"
+    git commit -m "!Comment!" >> !LOG_FULLFILENAME!
+    rem git commit -m "!Comment!"
 
     rem echo ...git push -u origin main
-    call :WritePROCESS ...git push -u origin main
+    call :WritePROCESS .... git push -u origin main
  
     call :SetColor !cTEXT!
-    rem git push -u origin main >> !LOG_FULLFILENAME!
-    git push -u origin main
+    git push -u origin main >> !LOG_FULLFILENAME!
+    rem git push -u origin main
 
     rem call :WriteCR
     rem call :ReSetColorCR
     call :ReSetColor
     rem <nul set /p strTemp=!sRESET!
-
 
     exit /b 0
 rem endfunction
