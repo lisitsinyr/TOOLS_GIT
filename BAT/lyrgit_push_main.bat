@@ -213,17 +213,21 @@ rem beginfunction
 
     rem echo ...git add --all
     call :WritePROCESS ...git add --all
-    git add --all >> !LOG_FULLFILENAME!
+    rem git add --all >> !LOG_FULLFILENAME!
+    git add --all
     
     rem echo ...git commit -m "%Comment%"
-    call :WritePROCESS ...git commit -m !Comment!
-    git commit -m !Comment! >> !LOG_FULLFILENAME!
+    call :WritePROCESS ...git commit -m "!Comment!"
+    rem git commit -m !Comment! >> !LOG_FULLFILENAME!
+    git commit -m "!Comment!"
 
     rem echo ...git push -u origin main
     call :WritePROCESS ...git push -u origin main
  
     call :SetColor !cTEXT!
-    git push -u origin main >> !LOG_FULLFILENAME!
+    rem git push -u origin main >> !LOG_FULLFILENAME!
+    git push -u origin main
+
     rem call :WriteCR
     rem call :ReSetColorCR
     call :ReSetColor
